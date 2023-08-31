@@ -17,7 +17,11 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  height: 100vh;
+  position: relative;
+  font-size: 14px;
+  /* color: rgb(var(--foreground-rgb)); */
+  color: #363e47;
   background: linear-gradient(
       to bottom,
       transparent,
@@ -25,3 +29,66 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+h3{
+  color: black;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.5);
+	transition: opacity 200ms;
+  visibility: hidden;
+	opacity: 0;
+  z-index: 1;
+  }
+   .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+  .popup {
+	margin: 75px auto;
+	padding: 20px;
+	background: #fff;
+	border: 1px solid #666;
+	width: 50vw;
+	box-shadow: 0 0 50px rgba(0,0,0,0.5);
+	position: relative;
+  }
+  h2 {
+    margin-top: 0;
+    color: #666;
+  }
+  
+  .content {
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  .close {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 0;
+    right: 0;
+    opacity: 0.8;
+    transition: all 200ms;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+  }
+  .close:hover {
+    opacity: 1;
+  }
+/* modal上checkbox按鈕 */
+  .active:checked ~ span{
+    border-color: black;
+  }
