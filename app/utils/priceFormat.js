@@ -11,6 +11,8 @@ export const priceFormat = (data) => {
     const min = Math.min(priceLevels[data[0]].min, priceLevels[data[1]].min);
     const max = Math.max(priceLevels[data[0]].max, priceLevels[data[1]].max);
     return { max, min };
+  } else if (data.length === 0) {
+    return null;
   } else {
     return { max: 4, min: 0 };
   }

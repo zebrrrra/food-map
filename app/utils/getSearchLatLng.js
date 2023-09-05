@@ -7,7 +7,7 @@ export const getSearchLatLng = (data) => {
       name,
     }))
     .map(({ location, id, name }) => ({
-      latLng: new google.maps.LatLng(location.lat(), location.lng()),
+      latLng: new google.maps.LatLng(location.lat, location.lng),
       id,
       name,
     }));

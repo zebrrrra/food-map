@@ -10,10 +10,5 @@ export const getPosition = (map) => {
     );
     map.panTo(origin);
     return origin;
-    // setFuc((prev) => ({
-    //   ...prev,
-    //   lat: position.coords.latitude,
-    //   lng: position.coords.longitude,
-    // }));
   });
 };

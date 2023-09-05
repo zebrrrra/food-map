@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import Image from "next/image";
 import { getDay } from "../utils/getDay";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import {
@@ -14,11 +13,10 @@ import Carousel from "./Carousel";
 import RatingStar from "./RatingStar";
 import ReviewCard from "./ReviewCard";
 
-const DetailModal = ({ isOpen, onClose, detailData, photos, distance }) => {
-  // const [smallScreen, setSmallScreen] = useState(false);
+const DetailModal = ({ isOpen, onClose, detail, distance }) => {
   const today = getDay({
     index: new Date().getDay(),
-    array: detailData.opening_hours.weekday_text,
+    array: detail.data.opening_hours.weekday_text,
   });
   return (
     <Transition show={isOpen} as={React.Fragment}>
@@ -54,14 +52,19 @@ const DetailModal = ({ isOpen, onClose, detailData, photos, distance }) => {
             <div className=" flex min-h-full items-end justify-center md:items-start">
               {/* 與detail有異 但保持原樣 */}
               <Dialog.Panel className="w-full rounded bg-white px-4 ">
-                <div className="flex h-6 justify-center md:invisible">
-                  <ChevronDownIcon />
-                </div>
-                <Carousel photos={photos} />
+                <button
+                  className="flex h-6 w-full justify-center md:invisible"
+                  onClick={onClose}
+                >
+                  <ChevronDownIcon className="w-6" />
+                </button>
+                <Carousel photos={detail.photos} />
 
                 {/* 輪播圖以下詳細說明 */}
                 <div className="mt-4 flex items-center justify-between">
-                  <h3 className="text-3xl text-green-600">{detailData.name}</h3>
+                  <h3 className="text-3xl text-green-600">
+                    {detail.data.name}
+                  </h3>
                   <div>
                     <div className="mb-px flex items-center ">
                       <TruckIcon className="h-6 w-6" />
@@ -74,17 +77,17 @@ const DetailModal = ({ isOpen, onClose, detailData, photos, distance }) => {
                   </div>
                 </div>
                 <div className="mt-1 flex items-center">
-                  <RatingStar rating={detailData.rating} />
-                  <span>{detailData.rating}</span>
+                  <RatingStar rating={detail.data.rating} />
+                  <span>{detail.data.rating}</span>
                 </div>
                 <div className="divide-y">
-                  <div className="flex  py-4">
+                  <div className="flex py-4">
                     <MapPinIcon className="mr-4 h-6 w-6" />
-                    <h4>{detailData.formatted_address}</h4>
+                    <h4>{detail.data.formatted_address}</h4>
                   </div>
                   <div className="flex py-4">
                     <PhoneIcon className="mr-4 h-6 w-6" />
-                    <h4>{detailData.formatted_phone_number}</h4>
+                    <h4>{detail.data.formatted_phone_number}</h4>
                   </div>
                   <Menu as="div" className="flex items-center py-4">
                     <ClockIcon className="mr-4 h-6 w-6" />
@@ -94,7 +97,7 @@ const DetailModal = ({ isOpen, onClose, detailData, photos, distance }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <>
-                            {detailData.opening_hours.weekday_text.map(
+                            {detail.data.opening_hours.weekday_text.map(
                               (text, index) => (
                                 <div key={index}>{text}</div>
                               ),
@@ -108,7 +111,7 @@ const DetailModal = ({ isOpen, onClose, detailData, photos, distance }) => {
                 {/* 評論區 */}
                 <h4 className="text-2xl">評論</h4>
                 <ol className="mt-6 divide-y">
-                  {detailData.reviews.map((item, index) => (
+                  {detail.data.reviews.map((item, index) => (
                     <ReviewCard key={index} data={item} />
                   ))}
                 </ol>

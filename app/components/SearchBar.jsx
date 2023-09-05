@@ -5,50 +5,61 @@ import { CheckIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import FilterModal from "./FilterModal";
 import { priceFormat } from "../utils/priceFormat";
-import { getNearbySearch } from "../api/route";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useSearch } from "../contexts/searchContext";
+import { useRouter, useSearchParams } from "next/navigation";
+import { getNearbySearch } from "../api/frontend/getNearbySearch";
 
-const SearchBar = ({ mapRef, currentPosition }) => {
-  const [selected, setSelected] = useState("");
+const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
-  const { setResult } = useSearch();
-  // const location = new google.maps.LatLng(
-  //   currentPosition.lat,
-  //   currentPosition.lng,
-  // );
-
+  // TODOcurrentPosition考慮從url取得，刪除useSearch()
+  const { currentPosition, setResult } = useSearch();
+  const router = useRouter();
+  // const search = useSearchParams();
+  const latLng = new google.maps.LatLng(
+    currentPosition.lat,
+    currentPosition.lng,
+  );
   const {
     ready,
     value,
     setValue,
     suggestions: { status, data },
+    clearSuggestions,
   } = usePlacesAutocomplete({
     requestOptions: {
       region: "TW",
       language: "zh-TW",
-      location: currentPosition,
+      location: latLng,
       radius: 5000,
       type: ["restaurant"],
     },
   });
 
-  const fetchResult = async () => {
+  const onSearchNavigate = async () => {
     if (Object.keys(options).length === 0) return alert("請選擇條件");
-    try {
-      const data = await getNearbySearch({
-        map: mapRef.current,
-        keyword: selected,
-        options,
-        location: currentPosition,
-      });
-      console.log("data", data);
-      setResult(data);
-      // onselectRadius(options.distance)
-    } catch (error) {
-      console.error(error);
+    if (!currentPosition) return alert("請提供位置");
+    if (!value.trim()) return alert("請輸入文字");
+    const encodeOptions = encodeURIComponent(JSON.stringify(options));
+
+    const data = await getNearbySearch({
+      keyword: value,
+      lat: currentPosition.lat,
+      lng: currentPosition.lng,
+      encodeOptions,
+    });
+    console.log(data);
+
+    if (data.status === "OK") {
+      setResult(data.results);
+    } else {
+      console.log(data.status);
     }
+    clearSuggestions();
+    router.push(
+      `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
+    );
   };
 
   const test = () => {
@@ -56,9 +67,6 @@ const SearchBar = ({ mapRef, currentPosition }) => {
     console.log("location", currentPosition);
     console.log(priceFormat(options.prices));
   };
-  // const handleConfirmFilter = (selectedData) => {
-  //   setOptions(selectedData);
-  // };
 
   return (
     <>
@@ -68,10 +76,10 @@ const SearchBar = ({ mapRef, currentPosition }) => {
         onConfirm={(selectedData) => setOptions(selectedData)}
       />
       <div
-        className={`fixed left-[50%] top-16 w-52 translate-x-[-50%] md:left-0 md:top-8 md:ml-2 md:translate-x-[unset]`}
+        className={`fixed left-[50%] top-16 w-52 translate-x-[-50%] md:left-0 md:top-0 md:ml-2 md:mt-1 md:translate-x-[unset]`}
       >
         <button onClick={test}>測試測試</button>
-        <Combobox value={selected} onChange={setSelected}>
+        <Combobox value={value} onChange={setValue}>
           <div className="relative mt-1">
             {/* filter鈕 */}
             <button
@@ -85,12 +93,13 @@ const SearchBar = ({ mapRef, currentPosition }) => {
                 className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
                 disabled={!ready}
                 placeholder="search restaurant.."
+                value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
               {/* 搜尋鈕 */}
               <Combobox.Button
                 className="absolute inset-y-0 right-0 flex items-center pr-2"
-                onClick={fetchResult}
+                onClick={onSearchNavigate}
               >
                 <MagnifyingGlassIcon
                   className="h-5 w-5 text-gray-400"
@@ -110,7 +119,8 @@ const SearchBar = ({ mapRef, currentPosition }) => {
                   <Combobox.Option
                     key={place_id}
                     className={({ active }) =>
-                      `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? "bg-teal-600 text-white" : "text-gray-900"
+                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                        active ? "bg-teal-600 text-white" : "text-gray-900"
                       }`
                     }
                     value={description}
@@ -118,15 +128,17 @@ const SearchBar = ({ mapRef, currentPosition }) => {
                     {({ selected, active }) => (
                       <>
                         <span
-                          className={`block truncate ${selected ? "font-medium" : "font-normal"
-                            }`}
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
                         >
                           {description}
                         </span>
                         {selected ? (
                           <span
-                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${active ? "text-white" : "text-teal-600"
-                              }`}
+                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                              active ? "text-white" : "text-teal-600"
+                            }`}
                           >
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>

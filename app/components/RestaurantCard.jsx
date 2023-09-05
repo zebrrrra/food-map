@@ -3,22 +3,43 @@ import Image from "next/image";
 import openIcon from "../../public/images/openIcon.png";
 import closedIcon from "../../public/images/closedIcon.png";
 import RatingStar from "./RatingStar";
+import { useSearch } from "../contexts/searchContext";
+import { useMarkerContext } from "../contexts/hoverMarkerContext";
 
-const RestaurantCard = ({ id, onCardClick, data, onHover }) => {
+const RestaurantCard = ({ id, onCardClick, data }) => {
+  const { isSmallScreen } = useSearch();
+  const { setHoveredMarkerId } = useMarkerContext();
+
+  const handleHover = (value) => {
+    if (!isSmallScreen) {
+      setHoveredMarkerId(value);
+    }
+  };
+  const photoUrl =
+    Object.keys(data).includes("photos") &&
+    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+
+  const place = data.plus_code.compound_code.match(/[\u4e00-\u9fa5]+/);
+
   return (
     <li
       className="flex snap-start flex-col rounded-xl bg-slate-50 shadow-lg md:h-[150px] md:flex-row md:overflow-hidden"
+      id={id}
       onClick={() => onCardClick(id)}
-      onMouseOver={() => onHover(id)}
+      onMouseOver={() => handleHover(id)}
     >
       <div className="h-[112px] w-full  md:flex md:h-full md:w-[140px]">
-        <Image
-          src={data.photos[0].getUrl()}
-          alt="site"
-          width={150}
-          height={112}
-          className="h-[inherit] max-h-full rounded-t-xl"
-        />
+        {Object.keys(data).includes("photos") ? (
+          <Image
+            src={photoUrl}
+            alt="site"
+            width={150}
+            height={112}
+            className="h-[inherit] max-h-full rounded-t-xl"
+          />
+        ) : (
+          <div>店家無提供照片</div>
+        )}
       </div>
       {/* 圖片以下文字說明 */}
       <div className="mt-1 px-1 md:pl-4">
@@ -26,11 +47,10 @@ const RestaurantCard = ({ id, onCardClick, data, onHover }) => {
           <h3 className=" h-[60px] max-w-[100px] overflow-hidden text-lg md:col-span-2 ">
             {data.name}
           </h3>
-          <div>{data.opening_hours.isOpen()}</div>
+          <div>{data.opening_hours.open_now}</div>
           <div className="h-5 w-10 md:col-span-1">
-            {/* FIXME ui顯示異常 */}
             <Image
-              src={data.opening_hours.isOpen() ? closedIcon : openIcon}
+              src={data.opening_hours.open_now ? openIcon : closedIcon}
               alt="openState"
               width="auto"
               height="auto"
@@ -40,8 +60,7 @@ const RestaurantCard = ({ id, onCardClick, data, onHover }) => {
         </div>
         <div className=" mt-1 flex justify-start">
           <RatingStar rating={data.rating} />
-          {/* TODO 待資料替換 */}
-          <p className="text-black">東區</p>
+          <p className="text-black">{place[0]}</p>
         </div>
         <div className="hidden md:mt-1 md:flex md:items-center">
           <svg
