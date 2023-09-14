@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { priceFormat } from "@/app/utils/priceFormat";
+import { priceFormat } from "@/app/utils/price";
 
 const BASE_URL =
   "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";

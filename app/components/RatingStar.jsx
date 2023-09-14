@@ -12,7 +12,7 @@ const RatingStar = ({ rating }) => {
             strokeWidth={1.5}
             stroke="currentColor"
             className={`h-4 w-4 ${
-              index < Math.round(rating) ? "text-yellow-300" : "text-gray-300"
+              index < Math.round(rating) ? "text-brand-700" : "text-gray-300"
             }`}
           >
             <path

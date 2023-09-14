@@ -1,5 +1,5 @@
-import React from "react";
-import { MapPinIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
+import location from "@/public/images/worldwideLocation.png";
 // TODO mapRef取得
 import { useSearch } from "../contexts/searchContext";
 
@@ -28,10 +28,16 @@ const LocationButton = () => {
     });
   };
   return (
-    <div className="fixed bottom-[210px] left-2 h-10 w-10 rounded-full bg-white md:bottom-[93vh] md:left-[32vw]">
-      <MapPinIcon
-        onClick={handlePanToLocation}
-        className="mx-auto my-2 w-6 cursor-pointer"
+    <div
+      className="fixed right-4 top-4 flex h-10 w-10 items-center rounded bg-white shadow-md "
+      onClick={handlePanToLocation}
+    >
+      <Image
+        src={location}
+        alt="worldwide location"
+        width={30}
+        height={30}
+        className="mx-auto cursor-pointer"
       />
     </div>
   );

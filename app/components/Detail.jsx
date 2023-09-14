@@ -42,7 +42,7 @@ const Detail = ({ isOpen, onClose, detail, distance }) => {
 
               {/* 輪播圖以下詳細說明 */}
               <div className="mt-4 flex justify-between">
-                <h3 className="text-3xl text-green-600">{detail.data.name}</h3>
+                <h3 className="text-green-600 text-3xl">{detail.data.name}</h3>
                 <div>
                   <div className="mb-px flex items-center ">
                     <TruckIcon className="h-6 w-6" />

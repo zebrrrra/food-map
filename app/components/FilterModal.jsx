@@ -1,26 +1,24 @@
 import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
 import RadioButton from "./RadioButton";
+import Checkbox from "./Checkbox";
+
+const priceCollection = [
+  { id: "lowPrice", value: "low", label: "低" },
+  { id: "middlePrice", value: "middle", label: "中" },
+  { id: "highPrice", value: "high", label: "高" },
+];
+const openNowCollection = [{ id: "yes", value: "yes", label: "是" }];
+const distanceCollection = [
+  { id: 3000, value: 3000, label: "3公里以內" },
+  { id: 5000, value: 5000, label: "5公里以內" },
+];
 
 const FilterModal = ({ open, onClose, onConfirm }) => {
-  const [selectedOpenNow, setSelectedOpenNow] = useState("yes");
+  const [selectedOpenNow, setSelectedOpenNow] = useState("");
   const [selectedPrices, setSelectedPrices] = useState([]);
   const [selectedDistance, setSelectedDistance] = useState(3000);
 
-  const priceCollection = [
-    { id: "lowPrice", value: "low", label: "低" },
-    { id: "middlePrice", value: "middle", label: "中" },
-    { id: "highPrice", value: "high", label: "高" },
-  ];
-  const openNowCollection = [
-    { id: "yes", value: "yes", label: "是" },
-    { id: "not", value: "not", label: "否" },
-  ];
-  const distanceCollection = [
-    { id: "three", value: 3000, label: "3公里以內" },
-    { id: "five", value: 5000, label: "5公里以內" },
-  ];
   const handlePriceChange = (e, value) => {
     if (e.target.checked) {
       setSelectedPrices([...selectedPrices, value]);
@@ -37,85 +35,78 @@ const FilterModal = ({ open, onClose, onConfirm }) => {
     onConfirm(selectedData);
     onClose();
   };
-
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      // className="relative z-50"
-    >
-      {/* id popup1 */}
+    <Dialog open={open} onClose={onClose}>
+      {/* overlay */}
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      {/* 白色方框 */}
-      <Dialog.Panel className="fixed inset-0 mx-[auto] my-[75px] w-[50vw] min-w-[300px] border border-solid border-zinc-400 bg-white p-5">
-        <div className="flex items-center justify-between">
-          <Dialog.Title className="text-2xl">篩選</Dialog.Title>
-          <button
-            className=" right-0 top-0 h-[30px] w-[30px]"
-            onClick={onClose}
-          >
-            <XMarkIcon />
-          </button>
-        </div>
-        <div className="max-h-[50vh] overflow-auto">
-          <div className="flex flex-col gap-6">
-            <div role="group" className="grid grid-cols-[1fr] gap-2">
-              <h3 className="mt-4">營業中</h3>
-              <form className="flex flex-wrap gap-2">
-                {openNowCollection.map(({ id, value, label }) => (
-                  <RadioButton
-                    key={id}
-                    id={id}
-                    value={value}
-                    label={label}
-                    onChange={(e) => setSelectedOpenNow(e.target.value)}
-                    selectedValue={selectedOpenNow}
-                    name="openNow"
-                  />
-                ))}
-              </form>
-              {/* second option */}
-              <h3 className="mt-4">價錢</h3>
-              <form className="flex flex-wrap gap-2">
-                {priceCollection.map(({ id, value, label }) => (
-                  <label htmlFor={id} className="flex items-center" key={id}>
-                    <input
-                      id={id}
-                      type="checkbox"
-                      name="price"
-                      // value={value}
-                      className=" active hidden"
-                      checked={selectedPrices.includes(value)}
-                      onChange={(e) => handlePriceChange(e, value)}
-                    />
-                    <span className="w-auto min-w-[50px] rounded-2xl border-2 border-solid border-gray-400 bg-slate-50 px-3 py-2 text-center ">
-                      <div className="flex">
-                        <span className=" font-light text-black ">{label}</span>
-                      </div>
-                    </span>
-                  </label>
-                ))}
-              </form>
-              {/* third option */}
-              <h3 className="mt-4">距離</h3>
-              <form className="flex flex-wrap gap-2">
-                {distanceCollection.map(({ id, value, label }) => (
-                  <RadioButton
-                    key={id}
-                    id={id}
-                    value={value}
-                    label={label}
-                    onChange={(e) => setSelectedDistance(e.target.value)}
-                    selectedValue={selectedDistance}
-                    name="distance"
-                  />
-                ))}
-              </form>
-            </div>
-            <button onClick={handleConfirmClick}>確認</button>
+      {/*  center container*/}
+      <div className=" flex min-h-full items-center justify-center ">
+        {/* 白色方框 */}
+        <Dialog.Panel className="border-zinc-400 fixed inset-0 mx-[auto] w-full min-w-[300px] border border-solid bg-white py-5 md:my-[75px] md:w-[50vw]">
+          <div className="flex items-center justify-between border-b-2 border-solid border-gray-500 px-5 pb-5">
+            <Dialog.Title className="text-2xl">篩選</Dialog.Title>
+            <button
+              className=" right-0 top-0 h-[40px] w-[75px] rounded-2xl bg-brand-700 text-white"
+              onClick={handleConfirmClick}
+            >
+              <span className="text-base tracking-[1px]">確認</span>
+            </button>
           </div>
-        </div>
-      </Dialog.Panel>
+          <div className="max-h-[50vh] overflow-auto px-5">
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-[1fr] gap-2">
+                <h3 className="mt-4">營業中</h3>
+                <form className="flex flex-wrap gap-2">
+                  {openNowCollection.map(({ id, value, label }) => (
+                    <Checkbox
+                      key={id}
+                      id={id}
+                      value={value}
+                      label={label}
+                      name="openNow"
+                      onChange={(e) =>
+                        setSelectedOpenNow(
+                          e.target.checked ? e.target.value : "",
+                        )
+                      }
+                      checked={selectedOpenNow === value}
+                    />
+                  ))}
+                </form>
+                {/* second option */}
+                <h3 className="mt-4">價錢</h3>
+                <form className="flex flex-wrap gap-2">
+                  {priceCollection.map(({ id, value, label }) => (
+                    <Checkbox
+                      key={id}
+                      id={id}
+                      value={value}
+                      label={label}
+                      name="price"
+                      onChange={(e) => handlePriceChange(e, value)}
+                      checked={selectedPrices.includes(value)}
+                    />
+                  ))}
+                </form>
+                {/* third option */}
+                <h3 className="mt-4">距離</h3>
+                <form className="flex flex-wrap gap-2">
+                  {distanceCollection.map(({ id, value, label }) => (
+                    <RadioButton
+                      key={id}
+                      id={id}
+                      value={value}
+                      label={label}
+                      onChange={(e) => setSelectedDistance(e.target.value)}
+                      checked={Number(selectedDistance) === value}
+                    />
+                  ))}
+                </form>
+              </div>
+            </div>
+          </div>
+        </Dialog.Panel>
+      </div>
     </Dialog>
   );
 };

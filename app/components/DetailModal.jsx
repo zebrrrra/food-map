@@ -48,7 +48,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
         >
           {/* scroll container */}
           <div className="fixed  inset-x-0 bottom-0 h-[80vh] overflow-y-auto md:absolute md:right-[unset] md:top-0 md:h-full md:w-full">
-            {/* to center container */}
+            {/*  center container */}
             <div className=" flex min-h-full items-end justify-center md:items-start">
               {/* 與detail有異 但保持原樣 */}
               <Dialog.Panel className="w-full rounded bg-white px-4 ">
@@ -62,7 +62,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
 
                 {/* 輪播圖以下詳細說明 */}
                 <div className="mt-4 flex items-center justify-between">
-                  <h3 className="text-3xl text-green-600">
+                  <h3 className="text-green-600 text-3xl">
                     {detail.data.name}
                   </h3>
                   <div>

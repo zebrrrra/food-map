@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearch } from "../contexts/searchContext";
 import { getDetail, getDistance } from "../api/route";
 import { useRouter } from "next/navigation";
 
 const useSelectMarkerHook = () => {
-  const [selectedMarkerId, setSelectedMarkerId] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
   const { isSmallScreen, listRef, mapRef, currentPosition } = useSearch();
   const router = useRouter();
   const latLng = new google.maps.LatLng(
@@ -23,21 +23,21 @@ const useSelectMarkerHook = () => {
       console.error(error);
     }
   };
-
   useEffect(() => {
     // 每次點擊marker
-    if (selectedMarkerId) {
+    if (selectedMarker) {
       if (isSmallScreen) {
-        const target = listRef.current.querySelector(`#${selectedMarkerId}`);
+        const target = listRef.current.querySelector(`#${selectedMarker}`);
         target.scrollIntoView({ behavior: "smooth" });
       } else {
-        router.push(`/detail/${selectedMarkerId}`);
+        router.push(`/detail/${selectedMarker}`);
       }
     }
-  }, [selectedMarkerId]);
+  }, [selectedMarker]);
 
   return {
-    setSelectedMarkerId,
+    setSelectedMarker,
+    selectedMarker,
     getDetailData,
   };
 };

@@ -10,9 +10,17 @@ const containerStyle = {
   width: "100%",
   height: "100%",
 };
+const defaultOptions = {
+  strokeOpacity: 0.5,
+  strokeWeight: 2,
+  clickable: false,
+  draggable: false,
+  editable: false,
+  visible: true,
+};
 
 const Map = () => {
-  const { setSelectedMarkerId } = useSelectMarkerHook();
+  const { setSelectedMarker, selectedMarker } = useSelectMarkerHook();
   const [markerName, setMarkerName] = useState(""); //infoWindow使用
   const { hoveredMarkerId } = useMarkerContext();
   const { result, isSmallScreen, currentPosition, mapRef } = useSearch();
@@ -23,7 +31,7 @@ const Map = () => {
     currentPosition.lat,
     currentPosition.lng,
   );
-  const latLngArr = getSearchLatLng(result);
+  const restaurants = useMemo(() => getSearchLatLng(result), [result]);
 
   const onLoad = useCallback((map) => {
     mapRef.current = map;
@@ -46,14 +54,6 @@ const Map = () => {
     [],
   );
 
-  const defaultOptions = {
-    strokeOpacity: 0.5,
-    strokeWeight: 2,
-    clickable: false,
-    draggable: false,
-    editable: false,
-    visible: true,
-  };
   return (
     <>
       {/* 3000 radius搭配zoom=14,5000 radius搭配zoom=13 */}
@@ -71,24 +71,31 @@ const Map = () => {
 
             {/* 搜尋店家marker */}
             {result &&
-              latLngArr.map(({ id, latLng, name }) => (
+              restaurants.map((item) => (
                 <Marker
-                  key={id}
-                  position={latLng}
-                  icon="https://img.icons8.com/color/48/food-bar.png"
+                  key={item.id}
+                  position={item.latLng}
+                  icon={{
+                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
+                  }}
+                  title={item.name}
                   animation={
-                    hoveredMarkerId === id ? google.maps.Animation.BOUNCE : null
+                    hoveredMarkerId === item.id
+                      ? google.maps.Animation.BOUNCE
+                      : null
                   }
-                  onClick={() => setSelectedMarkerId(id)}
+                  onClick={() => setSelectedMarker(item.id)}
                 />
               ))}
-
+            {/* {selectedMarker && <InfoWindow position={selectedMarker.latLng} >
+              <div>{selectedMarker.name}</div>
+            </InfoWindow>} */}
             {/* FIXME 希望radius以變數代入 */}
-            <Circle
+            {/* <Circle
               center={currentPosition}
               radius={5000}
               options={defaultOptions}
-            />
+            /> */}
           </GoogleMap>
         </div>
       </div>

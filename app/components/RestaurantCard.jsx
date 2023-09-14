@@ -1,10 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import openIcon from "../../public/images/openIcon.png";
-import closedIcon from "../../public/images/closedIcon.png";
+import ClosedLabel from "./closedLabel";
+import OpenLabel from "./openLabel";
 import RatingStar from "./RatingStar";
 import { useSearch } from "../contexts/searchContext";
 import { useMarkerContext } from "../contexts/hoverMarkerContext";
+import { MapPinIcon } from "@heroicons/react/24/outline";
+import { dollar } from "../utils/price";
 
 const RestaurantCard = ({ id, onCardClick, data }) => {
   const { isSmallScreen } = useSearch();
@@ -15,6 +17,7 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
       setHoveredMarkerId(value);
     }
   };
+
   const photoUrl =
     Object.keys(data).includes("photos") &&
     `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
@@ -23,67 +26,61 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
 
   return (
     <li
-      className="flex snap-start flex-col rounded-xl bg-slate-50 shadow-lg md:h-[150px] md:flex-row md:overflow-hidden"
+      className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:flex-row md:overflow-hidden md:px-2 md:pb-2"
       id={id}
-      onClick={() => onCardClick(id)}
       onMouseOver={() => handleHover(id)}
     >
-      <div className="h-[112px] w-full  md:flex md:h-full md:w-[140px]">
+      <div className="h-[112px] max-w-full  md:flex md:h-full md:w-[80px] lg:w-[140px]">
         {Object.keys(data).includes("photos") ? (
           <Image
             src={photoUrl}
             alt="site"
-            width={150}
-            height={112}
-            className="h-[inherit] max-h-full rounded-t-xl"
+            width={200}
+            height={200}
+            className="h-[inherit] max-h-full "
           />
         ) : (
           <div>店家無提供照片</div>
         )}
       </div>
       {/* 圖片以下文字說明 */}
-      <div className="mt-1 px-1 md:pl-4">
-        <div className="grid grid-flow-col items-center justify-between md:flex md:grid-cols-3 md:gap-20">
-          <h3 className=" h-[60px] max-w-[100px] overflow-hidden text-lg md:col-span-2 ">
+      <div className="w-[calc(100%-102px)] pl-4 md:w-[calc(100%-104px)] md:flex-1 md:pl-2 lg:w-[calc(100%-164px)]">
+        <div className="flex items-center justify-between md:flex md:grid-cols-3 md:gap-4">
+          <h3 className="  overflow-hidden text-ellipsis whitespace-nowrap text-lg md:col-span-2 ">
             {data.name}
           </h3>
-          <div>{data.opening_hours.open_now}</div>
-          <div className="h-5 w-10 md:col-span-1">
-            <Image
-              src={data.opening_hours.open_now ? openIcon : closedIcon}
-              alt="openState"
-              width="auto"
-              height="auto"
-              className=""
-            />
+
+          <div className="h-full w-[60px] md:col-span-1">
+            {Object.keys(data).includes("opening_hours") ? (
+              data.opening_hours.open_now ? (
+                <OpenLabel />
+              ) : (
+                <ClosedLabel />
+              )
+            ) : (
+              <span>無提供資訊</span>
+            )}
           </div>
         </div>
-        <div className=" mt-1 flex justify-start">
+        <div className=" mt-1 flex items-center justify-start">
           <RatingStar rating={data.rating} />
-          <p className="text-black">{place[0]}</p>
+          <p className="font-medium text-black">{data.rating}</p>
         </div>
-        <div className="hidden md:mt-1 md:flex md:items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-            />
-          </svg>
+        <div className="hidden md:mt-1 md:flex md:w-[180px] md:items-center md:overflow-hidden md:text-ellipsis md:whitespace-nowrap">
+          <MapPinIcon className="w-6" />
           <p className="">{data.vicinity}</p>
         </div>
+        <div className=" mt-1 flex items-center justify-start">
+          <p>
+            {dollar(data.price_level)} · {place[0]}
+          </p>
+        </div>
+        <button
+          onClick={() => onCardClick(id)}
+          className="mt-2 h-10 w-full rounded-md bg-brand-700 text-white md:hidden"
+        >
+          <span className="text-base">查看詳細資訊</span>
+        </button>
       </div>
     </li>
   );

@@ -17,3 +17,8 @@ export const priceFormat = (data) => {
     return { max: 4, min: 0 };
   }
 };
+
+export const dollar = (number) => {
+  if (!number) return "$";
+  return "$".repeat(number);
+};

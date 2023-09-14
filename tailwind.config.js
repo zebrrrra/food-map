@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,6 +12,15 @@ module.exports = {
     screens: {
       xs: "375px",
       ...defaultTheme.screens,
+    },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      black: colors.black,
+      white: colors.white,
+      gray: colors.slate,
+      red: colors.red,
+      brand: colors.green,
     },
     extend: {
       backgroundImage: {
