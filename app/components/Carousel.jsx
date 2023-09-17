@@ -14,18 +14,17 @@ const Carousel = ({ photos }) => {
       navigation={true}
       pagination={{ clickable: true }}
       modules={[Navigation, Pagination]}
-      className="h-[250px] w-full"
-      // className = "h-[56 %] w - full"原本寫法
+      className="w-full h-[220px]"
     >
       {photos &&
         photos.map((item, index) => (
-          <SwiperSlide className="h-auto w-full" key={index}>
+          <SwiperSlide className="relative" key={index}>
             <Image
               src={item}
-              alt="food"
-              width={375}
-              height={250}
-              className="mx-auto"
+              alt="Picture of the Restaurant"
+              fill
+              sizes="500px"
+              className="mx-auto object-cover overflow-hidden max-w-full"
             />
           </SwiperSlide>
         ))}

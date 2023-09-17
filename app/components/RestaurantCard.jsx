@@ -26,9 +26,10 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
 
   return (
     <li
-      className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:flex-row md:overflow-hidden md:px-2 md:pb-2"
+      className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:flex-row md:overflow-hidden md:px-2 md:pb-2 md:cursor-pointer"
       id={id}
       onMouseOver={() => handleHover(id)}
+      onClick={() => onCardClick(id)}
     >
       <div className="h-[112px] max-w-full  md:flex md:h-full md:w-[80px] lg:w-[140px]">
         {Object.keys(data).includes("photos") ? (
@@ -58,7 +59,7 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
                 <ClosedLabel />
               )
             ) : (
-              <span>無提供資訊</span>
+              <span className="flex w-[45px] justify-center">無資訊</span>
             )}
           </div>
         </div>

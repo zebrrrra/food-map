@@ -4,10 +4,9 @@ import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import FilterModal from "./FilterModal";
-import { priceFormat } from "../utils/price";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useSearch } from "../contexts/searchContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { getNearbySearch } from "../api/frontend/getNearbySearch";
 
 const SearchBar = () => {
@@ -40,7 +39,6 @@ const SearchBar = () => {
   });
 
   const onSearchNavigate = async () => {
-    if (Object.keys(options).length === 0) return alert("請選擇條件");
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
@@ -52,10 +50,11 @@ const SearchBar = () => {
       lng: currentPosition.lng,
       encodeOptions,
     });
-    console.log(data);
 
     if (data.status === "OK") {
-      setResult(data.results);
+      const searchData = data.results.filter((item) => Object.keys(item).includes('opening_hours'))
+      console.log(searchData)
+      setResult(searchData);
     } else if (data.status === "ZERO_RESULTS") {
       alert("無搜尋結果，請重新搜尋");
     } else {
@@ -73,9 +72,10 @@ const SearchBar = () => {
     }
   };
   const test = () => {
+    const encodeOptions = encodeURIComponent(JSON.stringify(options))
     console.log("options", options);
     console.log("location", currentPosition);
-    console.log(priceFormat(options.prices));
+    console.log(encodeOptions)
   };
 
   return (
@@ -125,17 +125,15 @@ const SearchBar = () => {
                     <Combobox.Option
                       key={place_id}
                       className={({ active }) =>
-                        `relative cursor-default select-none px-2 py-3 ${
-                          active ? "bg-brand-700 text-white" : "text-gray-500"
+                        `relative cursor-default select-none px-2 py-3 ${active ? "bg-brand-700 text-white" : "text-gray-500"
                         }`
                       }
                       value={description}
                     >
                       {({ selected, active }) => (
                         <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
+                          className={`block truncate ${selected ? "font-medium" : "font-normal"
+                            }`}
                         >
                           {description}
                         </span>

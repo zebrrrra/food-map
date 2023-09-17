@@ -93,7 +93,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                     <ClockIcon className="mr-4 h-6 w-6" />
                     <Menu.Button className="mr-4">營業時間</Menu.Button>
                     <div>{today}</div>
-                    <Menu.Items>
+                    <Menu.Items className="ml-1">
                       <Menu.Item>
                         {({ active }) => (
                           <>
@@ -109,8 +109,8 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                   </Menu>
                 </div>
                 {/* 評論區 */}
-                <h4 className="text-2xl">評論</h4>
-                <ol className="mt-6 divide-y">
+                <h4 className="text-2xl mt-4">評論</h4>
+                <ol className="mt-4 divide-y">
                   {detail.data.reviews.map((item, index) => (
                     <ReviewCard key={index} data={item} />
                   ))}

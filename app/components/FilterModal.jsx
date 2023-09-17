@@ -44,7 +44,7 @@ const FilterModal = ({ open, onClose, onConfirm }) => {
         {/* 白色方框 */}
         <Dialog.Panel className="border-zinc-400 fixed inset-0 mx-[auto] w-full min-w-[300px] border border-solid bg-white py-5 md:my-[75px] md:w-[50vw]">
           <div className="flex items-center justify-between border-b-2 border-solid border-gray-500 px-5 pb-5">
-            <Dialog.Title className="text-2xl">篩選</Dialog.Title>
+            <Dialog.Title className="text-2xl text-black">篩選</Dialog.Title>
             <button
               className=" right-0 top-0 h-[40px] w-[75px] rounded-2xl bg-brand-700 text-white"
               onClick={handleConfirmClick}

@@ -3,7 +3,6 @@ import Carousel from "./Carousel";
 import { Menu } from "@headlessui/react";
 import RatingStar from "./RatingStar";
 import {
-  ArrowLeftIcon,
   MapPinIcon,
   PhoneIcon,
   ClockIcon,
@@ -11,7 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import ReviewCard from "./ReviewCard";
 import { getDay } from "../utils/getDay";
-
+import { ChevronLeftIcon } from "@heroicons/react/20/solid"
 const Detail = ({ isOpen, onClose, detail, distance }) => {
   const today = getDay({
     index: new Date().getDay(),
@@ -22,9 +21,8 @@ const Detail = ({ isOpen, onClose, detail, distance }) => {
       className={`fixed inset-x-0 bottom-0 flex h-[200px] w-full items-end overflow-x-auto md:left-0 md:h-[90vh] md:w-[35vw] md:overflow-y-scroll md:bg-white`}
     >
       <div
-        className={`relative z-50 hidden md:h-full md:w-full ${
-          isOpen && "md:block"
-        }`}
+        className={`relative z-50 hidden md:h-full md:w-full ${isOpen && "md:block"
+          }`}
       >
         {/* scrollable container */}
         <div className="fixed inset-0 h-[80vh] overflow-y-auto md:absolute md:right-[unset] md:h-full md:w-full">
@@ -35,8 +33,8 @@ const Detail = ({ isOpen, onClose, detail, distance }) => {
               as="div"
               className="mx-auto max-w-sm rounded bg-white px-4 md:w-full md:max-w-[unset]"
             >
-              <div className="my-1 flex h-6 justify-start">
-                <ArrowLeftIcon onClick={onClose} />
+              <div className="my-2 flex h-6 justify-start">
+                <ChevronLeftIcon className="cursor-pointer" onClick={onClose} />
               </div>
               <Carousel photos={detail.photos} />
 
@@ -71,7 +69,7 @@ const Detail = ({ isOpen, onClose, detail, distance }) => {
                   <ClockIcon className="mr-4 h-6 w-6" />
                   <Menu.Button className="mr-4">營業時間</Menu.Button>
                   <div>{today}</div>
-                  <Menu.Items>
+                  <Menu.Items className="ml-1">
                     <Menu.Item>
                       {({ active }) => (
                         <>

@@ -90,7 +90,35 @@ h3{
   .close:hover {
     opacity: 1;
   }
-/* modal上checkbox按鈕 */
-  .active:checked ~ span{
-    border-color: black;
+
+  /* swiper button*/
+  .swiper-button-next,.swiper-button-prev{
+    width: 25px!important;
+    height: 25px!important;
+    border-radius: 50%;
+    border: 1px solid rgba(192,192,192,0.8);
+    background: white;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+   .swiper-button-next:hover,.swiper-button-prev:hover{
+    border: 3px solid rgb(21 128 61 );
+   }
+  .swiper-button-next{
+    background-image: url('../public/images/next.svg');
+  }
+  .swiper-button-prev{
+    background-image: url('../public/images/prev.svg');
+  }
+  .swiper-button-next::after,.swiper-button-prev::after{
+    content: "" !important;
+  }
+/* swiper pagination */
+.swiper .swiper-pagination-bullet{
+  background: white;
+  opacity: 1;
+}
+  .swiper .swiper-pagination-bullet-active{
+    background: rgb(21 128 61 );
+    border: 0.5px solid white;
   }

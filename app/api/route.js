@@ -70,7 +70,7 @@ export const getDetail = ({ map, id }) => {
     service.getDetails(detailRequest, (results, status) => {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         const photoArr = results.photos.map(({ getUrl }) =>
-          getUrl({ maxWidth: 200, maxHeight: 200 }),
+          getUrl({ maxWidth: 640 }),
         );
         resolve({ photos: photoArr, data: results });
       } else {
