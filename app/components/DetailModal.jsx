@@ -109,7 +109,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                   </Menu>
                 </div>
                 {/* 評論區 */}
-                <h4 className="text-2xl mt-4">評論</h4>
+                <h4 className="mt-4 text-2xl">評論</h4>
                 <ol className="mt-4 divide-y">
                   {detail.data.reviews.map((item, index) => (
                     <ReviewCard key={index} data={item} />

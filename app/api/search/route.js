@@ -14,7 +14,7 @@ export const GET = async (request) => {
     const lat = obj.lat;
     const lng = obj.lng;
     const options = JSON.parse(obj.options);
-    const { openNow, distance, min, max } = getOption(options)
+    const { openNow, distance, min, max } = getOption(options);
 
     const BasicUrl = `${BASE_URL}keyword=${keyword}&location=${lat},${lng}&maxprice=${max}&minprice=${min}&opennow=${openNow}&radius=${distance}&type=restaurant&language=zh-TW&key=${GOOGLE_API_KEY}`;
     const nonPriceLimitURL = `${BASE_URL}keyword=${keyword}&location=${lat},${lng}&opennow=${openNow}&radius=${distance}&type=restaurant&language=zh-TW&key=${GOOGLE_API_KEY}`;

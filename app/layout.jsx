@@ -2,12 +2,12 @@
 import React, { useMemo } from "react";
 import { useLoadScript } from "@react-google-maps/api";
 import Map from "./components/Map";
-import { SearchContextComponent } from "./contexts/searchContext";
-import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
 import SearchBar from "./components/SearchBar";
 import LocationButton from "./components/LocationButton";
+import ResultMarkers from "./components/ResultMarkers";
+import { SearchContextComponent } from "./contexts/searchContext";
+import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
 import "./globals.css";
-// 以上從page.jsx移來
 import { Raleway } from "next/font/google";
 
 const raleway = Raleway({ weight: "400", subsets: ["latin"] });
@@ -28,21 +28,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${raleway.className}`}>
-        {/* 原本加上px-3 */}
-        <div className="container mx-auto my-0 ">
-          {isLoaded && (
-            <SearchContextComponent>
-              <div className="relative h-screen w-full">
-                <MarkerContextProvider>
-                  <Map />
+        {isLoaded && (
+          <SearchContextComponent>
+            <div className="relative h-screen w-full">
+              <MarkerContextProvider>
+                <Map>
+                  <ResultMarkers />
                   {children}
-                </MarkerContextProvider>
-              </div>
-              <SearchBar />
-              <LocationButton />
-            </SearchContextComponent>
-          )}
-        </div>
+                </Map>
+              </MarkerContextProvider>
+            </div>
+            <SearchBar />
+            <LocationButton />
+          </SearchContextComponent>
+        )}
       </body>
     </html>
   );

@@ -14,7 +14,7 @@ const Carousel = ({ photos }) => {
       navigation={true}
       pagination={{ clickable: true }}
       modules={[Navigation, Pagination]}
-      className="w-full h-[220px]"
+      className="h-[220px] w-full"
     >
       {photos &&
         photos.map((item, index) => (
@@ -24,7 +24,7 @@ const Carousel = ({ photos }) => {
               alt="Picture of the Restaurant"
               fill
               sizes="500px"
-              className="mx-auto object-cover overflow-hidden max-w-full"
+              className="mx-auto max-w-full overflow-hidden object-cover"
             />
           </SwiperSlide>
         ))}

@@ -38,7 +38,8 @@ const SearchBar = () => {
     },
   });
 
-  const onSearchNavigate = async () => {
+  const onSearchNavigate = async (e) => {
+    e.preventDefault();
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
@@ -52,8 +53,10 @@ const SearchBar = () => {
     });
 
     if (data.status === "OK") {
-      const searchData = data.results.filter((item) => Object.keys(item).includes('opening_hours'))
-      console.log(searchData)
+      const searchData = data.results.filter((item) =>
+        Object.keys(item).includes("opening_hours"),
+      );
+      console.log(searchData);
       setResult(searchData);
     } else if (data.status === "ZERO_RESULTS") {
       alert("無搜尋結果，請重新搜尋");
@@ -66,16 +69,11 @@ const SearchBar = () => {
     );
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      onSearchNavigate();
-    }
-  };
   const test = () => {
-    const encodeOptions = encodeURIComponent(JSON.stringify(options))
+    const encodeOptions = encodeURIComponent(JSON.stringify(options));
     console.log("options", options);
     console.log("location", currentPosition);
-    console.log(encodeOptions)
+    console.log(encodeOptions);
   };
 
   return (
@@ -98,14 +96,16 @@ const SearchBar = () => {
             >
               <AdjustmentsHorizontalIcon />
             </button>
-            <div className=" relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md  sm:text-sm">
+            <form
+              className=" relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md sm:text-sm"
+              onSubmit={onSearchNavigate}
+            >
               <Combobox.Input
                 className="w-full py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 outline-none"
                 disabled={!ready}
                 placeholder="search restaurant.."
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                onKeyDown={handleKeyPress}
               />
               {/* 搜尋鈕 */}
               <Combobox.Button
@@ -117,7 +117,7 @@ const SearchBar = () => {
                   aria-hidden="true"
                 />
               </Combobox.Button>
-            </div>
+            </form>
             {data.length !== 0 && (
               <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 sm:text-sm">
                 {status === "OK" &&
@@ -125,15 +125,17 @@ const SearchBar = () => {
                     <Combobox.Option
                       key={place_id}
                       className={({ active }) =>
-                        `relative cursor-default select-none px-2 py-3 ${active ? "bg-brand-700 text-white" : "text-gray-500"
+                        `relative cursor-default select-none px-2 py-3 ${
+                          active ? "bg-brand-700 text-white" : "text-gray-500"
                         }`
                       }
                       value={description}
                     >
-                      {({ selected, active }) => (
+                      {({ selected }) => (
                         <span
-                          className={`block truncate ${selected ? "font-medium" : "font-normal"
-                            }`}
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
                         >
                           {description}
                         </span>

@@ -26,7 +26,7 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
 
   return (
     <li
-      className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:flex-row md:overflow-hidden md:px-2 md:pb-2 md:cursor-pointer"
+      className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:cursor-pointer md:flex-row md:overflow-hidden md:px-2 md:pb-2"
       id={id}
       onMouseOver={() => handleHover(id)}
       onClick={() => onCardClick(id)}

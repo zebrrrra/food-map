@@ -1,10 +1,13 @@
 "use client";
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  Children,
+} from "react";
 import { GoogleMap, Marker, Circle, InfoWindow } from "@react-google-maps/api";
 import { useSearch } from "../contexts/searchContext";
-import { getSearchLatLng } from "../utils/getSearchLatLng";
-import useSelectMarkerHook from "../hooks/selectMarkerHook";
-import { useMarkerContext } from "../contexts/hoverMarkerContext";
 
 const containerStyle = {
   width: "100%",
@@ -19,11 +22,9 @@ const defaultOptions = {
   visible: true,
 };
 
-const Map = () => {
-  const { setSelectedMarker, selectedMarker } = useSelectMarkerHook();
+const Map = ({ children }) => {
   const [markerName, setMarkerName] = useState(""); //infoWindow使用
-  const { hoveredMarkerId } = useMarkerContext();
-  const { result, isSmallScreen, currentPosition, mapRef } = useSearch();
+  const { isSmallScreen, currentPosition, mapRef } = useSearch();
 
   console.log(isSmallScreen);
 
@@ -31,7 +32,6 @@ const Map = () => {
     currentPosition.lat,
     currentPosition.lng,
   );
-  const restaurants = useMemo(() => getSearchLatLng(result), [result]);
 
   const onLoad = useCallback((map) => {
     mapRef.current = map;
@@ -68,28 +68,7 @@ const Map = () => {
           >
             {/* 目前位置marker */}
             {latLng && <Marker position={latLng} />}
-
-            {/* 搜尋店家marker */}
-            {result &&
-              restaurants.map((item) => (
-                <Marker
-                  key={item.id}
-                  position={item.latLng}
-                  icon={{
-                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
-                  }}
-                  title={item.name}
-                  animation={
-                    hoveredMarkerId === item.id
-                      ? google.maps.Animation.BOUNCE
-                      : null
-                  }
-                  onClick={() => setSelectedMarker(item.id)}
-                />
-              ))}
-            {/* {selectedMarker && <InfoWindow position={selectedMarker.latLng} >
-              <div>{selectedMarker.name}</div>
-            </InfoWindow>} */}
+            {children}
             {/* FIXME 希望radius以變數代入 */}
             {/* <Circle
               center={currentPosition}

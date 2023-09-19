@@ -10,7 +10,8 @@ import {
 } from "@heroicons/react/24/outline";
 import ReviewCard from "./ReviewCard";
 import { getDay } from "../utils/getDay";
-import { ChevronLeftIcon } from "@heroicons/react/20/solid"
+import { ChevronLeftIcon } from "@heroicons/react/20/solid";
+
 const Detail = ({ isOpen, onClose, detail, distance }) => {
   const today = getDay({
     index: new Date().getDay(),
@@ -21,8 +22,9 @@ const Detail = ({ isOpen, onClose, detail, distance }) => {
       className={`fixed inset-x-0 bottom-0 flex h-[200px] w-full items-end overflow-x-auto md:left-0 md:h-[90vh] md:w-[35vw] md:overflow-y-scroll md:bg-white`}
     >
       <div
-        className={`relative z-50 hidden md:h-full md:w-full ${isOpen && "md:block"
-          }`}
+        className={`relative z-50 hidden md:h-full md:w-full ${
+          isOpen && "md:block"
+        }`}
       >
         {/* scrollable container */}
         <div className="fixed inset-0 h-[80vh] overflow-y-auto md:absolute md:right-[unset] md:h-full md:w-full">
