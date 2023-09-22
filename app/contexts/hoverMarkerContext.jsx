@@ -8,6 +8,7 @@ export const useMarkerContext = () => {
 
 export const MarkerContextProvider = ({ children }) => {
   const [hoveredMarkerId, setHoveredMarkerId] = useState(null);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     let bounceTimeout;
@@ -21,7 +22,9 @@ export const MarkerContextProvider = ({ children }) => {
     };
   }, [hoveredMarkerId]);
   return (
-    <MarkerContext.Provider value={{ hoveredMarkerId, setHoveredMarkerId }}>
+    <MarkerContext.Provider
+      value={{ hoveredMarkerId, setHoveredMarkerId, result, setResult }}
+    >
       {children}
     </MarkerContext.Provider>
   );

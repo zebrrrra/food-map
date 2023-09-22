@@ -4,7 +4,8 @@ import { useLoadScript } from "@react-google-maps/api";
 import Map from "./components/Map";
 import SearchBar from "./components/SearchBar";
 import LocationButton from "./components/LocationButton";
-import ResultMarkers from "./components/ResultMarkers";
+// import ResultMarkers from "./components/ResultMarkers";
+import Providers from "./components/Providers";
 import { SearchContextComponent } from "./contexts/searchContext";
 import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
 import "./globals.css";
@@ -30,16 +31,16 @@ export default function RootLayout({ children }) {
       <body className={`${raleway.className}`}>
         {isLoaded && (
           <SearchContextComponent>
-            <div className="relative h-screen w-full">
-              <MarkerContextProvider>
-                <Map>
-                  <ResultMarkers />
+            <Providers>
+              <div className="relative h-screen w-full">
+                <MarkerContextProvider>
+                  <Map />
                   {children}
-                </Map>
-              </MarkerContextProvider>
-            </div>
-            <SearchBar />
-            <LocationButton />
+                </MarkerContextProvider>
+              </div>
+              <SearchBar />
+              <LocationButton />
+            </Providers>
           </SearchContextComponent>
         )}
       </body>

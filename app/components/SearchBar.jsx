@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
@@ -7,12 +7,12 @@ import FilterModal from "./FilterModal";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useSearch } from "../contexts/searchContext";
 import { useRouter } from "next/navigation";
-import { getNearbySearch } from "../api/frontend/getNearbySearch";
-
+// import { getNearbySearch } from "../api/frontend/getNearbySearch";
+// import { useMarkerContext } from "../contexts/hoverMarkerContext";
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
-  const { currentPosition, setResult } = useSearch();
+  const { currentPosition, mapRef } = useSearch();
   const router = useRouter();
   const northEast = new google.maps.LatLng(
     currentPosition.lat + 0.05,
@@ -38,42 +38,22 @@ const SearchBar = () => {
     },
   });
 
-  const onSearchNavigate = async (e) => {
+  const onSearchNavigate = (e) => {
     e.preventDefault();
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
     const encodeOptions = encodeURIComponent(JSON.stringify(options));
 
-    const data = await getNearbySearch({
-      keyword: value,
-      lat: currentPosition.lat,
-      lng: currentPosition.lng,
-      encodeOptions,
-    });
-
-    if (data.status === "OK") {
-      const searchData = data.results.filter((item) =>
-        Object.keys(item).includes("opening_hours"),
-      );
-      console.log(searchData);
-      setResult(searchData);
-    } else if (data.status === "ZERO_RESULTS") {
-      alert("無搜尋結果，請重新搜尋");
-    } else {
-      console.log(data.status);
-    }
-
+    // search/keyword/location/options
     router.push(
-      `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
+      `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
     );
   };
 
   const test = () => {
-    const encodeOptions = encodeURIComponent(JSON.stringify(options));
     console.log("options", options);
     console.log("location", currentPosition);
-    console.log(encodeOptions);
   };
 
   return (

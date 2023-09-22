@@ -5,7 +5,7 @@ const Loading = () => {
     >
       <div className="border-blue-500 h-16 w-16 animate-spin rounded-full border-t-4 border-solid"></div>
 
-      <div>Loading....</div>
+      <div className="ml-2 text-base">Loading....</div>
     </div>
   );
 };

@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect, useRef } from "react";
 
 const SearchContext = createContext();
 export const SearchContextComponent = ({ children }) => {
-  const [result, setResult] = useState(null);
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
 
@@ -42,8 +41,6 @@ export const SearchContextComponent = ({ children }) => {
   return (
     <SearchContext.Provider
       value={{
-        result,
-        setResult,
         isSmallScreen,
         currentPosition,
         setCurrentPosition,

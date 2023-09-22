@@ -1,13 +1,11 @@
 "use client";
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  useEffect,
-  Children,
-} from "react";
-import { GoogleMap, Marker, Circle, InfoWindow } from "@react-google-maps/api";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useSearch } from "../contexts/searchContext";
+// import ResultMarkers from "./ResultMarkers";
+import useSelectMarkerHook from "../hooks/selectMarkerHook";
+import { useMarkerContext } from "../contexts/hoverMarkerContext";
+import { getSearchLatLng } from "../utils/getSearchLatLng";
 
 const containerStyle = {
   width: "100%",
@@ -22,10 +20,15 @@ const defaultOptions = {
   visible: true,
 };
 
-const Map = ({ children }) => {
-  const [markerName, setMarkerName] = useState(""); //infoWindow使用
+const Map = () => {
   const { isSmallScreen, currentPosition, mapRef } = useSearch();
+  const { hoveredMarkerId, result } = useMarkerContext();
+  const restaurants = getSearchLatLng(result);
+  // const {latLng,id,name} = useMemo(() => getSearchLatLng(result), [result]);
 
+  const { setSelectedMarker } = useSelectMarkerHook();
+  console.log(result);
+  console.log(restaurants);
   console.log(isSmallScreen);
 
   const latLng = new google.maps.LatLng(
@@ -68,13 +71,22 @@ const Map = ({ children }) => {
           >
             {/* 目前位置marker */}
             {latLng && <Marker position={latLng} />}
-            {children}
-            {/* FIXME 希望radius以變數代入 */}
-            {/* <Circle
-              center={currentPosition}
-              radius={5000}
-              options={defaultOptions}
-            /> */}
+            {/* 餐廳markers */}
+            {restaurants &&
+              restaurants.map(({ id, latLng, name }) => (
+                <Marker
+                  key={id}
+                  position={latLng}
+                  icon={{
+                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
+                  }}
+                  title={name}
+                  animation={
+                    hoveredMarkerId === id ? google.maps.Animation.BOUNCE : null
+                  }
+                  onClick={() => setSelectedMarker(id)}
+                />
+              ))}
           </GoogleMap>
         </div>
       </div>
