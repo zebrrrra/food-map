@@ -49,6 +49,10 @@ const SearchBar = () => {
     router.push(
       `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
     );
+    mapRef.current.panTo(
+      new google.maps.LatLng(currentPosition.lat, currentPosition.lng),
+    );
+    mapRef.current.setZoom(13);
   };
 
   const test = () => {

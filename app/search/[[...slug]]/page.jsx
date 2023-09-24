@@ -11,14 +11,13 @@ const SearchPage = ({ params }) => {
   const { setResult } = useMarkerContext();
   // keyword, @lat,lng, options=
   const slugs = params.slug.map((item) => decodeURIComponent(item));
-  // console.log(slugs);
-  // slugs[2].split('=')[1]先以空物件做設計
-  const { data, isLoading, isSuccess } = useQuery({
+  console.log(JSON.parse(slugs[2].split("=")[1]));
+  const { data, isLoading, isSuccess, isError } = useQuery({
     queryKey: [
       "nearbySearch",
       {
         keyword: slugs[0],
-        options: JSON.parse(slugs[2].split("=")[1]),
+        options: JSON.parse(slugs[2].split("=")[1]), //物件
         location: slugs[1],
       },
     ],
@@ -43,6 +42,9 @@ const SearchPage = ({ params }) => {
 
   if (isLoading) {
     return <Loading />;
+  }
+  if (isError) {
+    alert("搜尋失敗，請重新搜尋");
   }
   return (
     <>

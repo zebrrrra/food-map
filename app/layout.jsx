@@ -30,8 +30,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${raleway.className}`}>
         {isLoaded && (
-          <SearchContextComponent>
-            <Providers>
+          <Providers>
+            <SearchContextComponent>
               <div className="relative h-screen w-full">
                 <MarkerContextProvider>
                   <Map />
@@ -40,8 +40,8 @@ export default function RootLayout({ children }) {
               </div>
               <SearchBar />
               <LocationButton />
-            </Providers>
-          </SearchContextComponent>
+            </SearchContextComponent>
+          </Providers>
         )}
       </body>
     </html>

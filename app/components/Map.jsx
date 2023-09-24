@@ -71,22 +71,26 @@ const Map = () => {
           >
             {/* 目前位置marker */}
             {latLng && <Marker position={latLng} />}
+
             {/* 餐廳markers */}
-            {restaurants &&
-              restaurants.map(({ id, latLng, name }) => (
-                <Marker
-                  key={id}
-                  position={latLng}
-                  icon={{
-                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
-                  }}
-                  title={name}
-                  animation={
-                    hoveredMarkerId === id ? google.maps.Animation.BOUNCE : null
-                  }
-                  onClick={() => setSelectedMarker(id)}
-                />
-              ))}
+            {restaurants
+              ? restaurants.map(({ id, latLng, name }) => (
+                  <Marker
+                    key={id}
+                    position={latLng}
+                    icon={{
+                      url: "https://img.icons8.com/tiny-glyph/32/visit.png",
+                    }}
+                    title={name}
+                    animation={
+                      hoveredMarkerId === id
+                        ? google.maps.Animation.BOUNCE
+                        : null
+                    }
+                    onClick={() => setSelectedMarker(id)}
+                  />
+                ))
+              : null}
           </GoogleMap>
         </div>
       </div>
