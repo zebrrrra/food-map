@@ -24,7 +24,7 @@ export const nearbySearch = ({ map, keyword, options, location }) => {
         // 處理搜索結果
         resolve(data);
       } else {
-        reject("搜尋失敗", status);
+        reject(new Error(`搜尋失敗: ${status}`))
       }
     });
   });

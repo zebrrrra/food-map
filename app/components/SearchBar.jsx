@@ -7,12 +7,14 @@ import FilterModal from "./FilterModal";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useGlobal } from "../contexts/globalContext";
 import { useRouter } from "next/navigation";
+import { nearbySearch } from "../api/frontend/nearbySearch";
+import { useMarkerContext } from "../contexts/hoverMarkerContext";
 // import { getNearbySearch } from "../api/frontend/getNearbySearch";
-// import { useMarkerContext } from "../contexts/hoverMarkerContext";
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
-  const { currentPosition, mapRef } = useGlobal();
+  const { currentPosition, mapRef, setResult } = useGlobal();
+  // const { setResult } = useMarkerContext()
   const router = useRouter();
   const northEast = new google.maps.LatLng(
     currentPosition.lat + 0.05,
@@ -36,23 +38,40 @@ const SearchBar = () => {
       locationRestriction: new google.maps.LatLngBounds(southWest, northEast),
       type: ["restaurant"],
     },
+    // 停止输入后等待1500毫秒
+    debounce: 1000
   });
 
-  const onSearchNavigate = (e) => {
+  const onSearchNavigate = async (e) => {
     e.preventDefault();
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
-    const encodeOptions = encodeURIComponent(JSON.stringify(options));
+    try {
+      const encodeOptions = encodeURIComponent(JSON.stringify(options));
+      const searchData = await nearbySearch({
+        map: mapRef.current, keyword: value, options, location: new google.maps.LatLng(
+          currentPosition.lat,
+          currentPosition.lng,
+        )
+      })
+      // 成功取得data再setresult
+      if (searchData) {
+        console.log(searchData)
+        setResult(searchData)
+      }
+      // search/keyword/location/options
+      router.push(
+        `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
+      );
+      mapRef.current.panTo(
+        new google.maps.LatLng(currentPosition.lat, currentPosition.lng),
+      );
+      mapRef.current.setZoom(13);
 
-    // search/keyword/location/options
-    router.push(
-      `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
-    );
-    mapRef.current.panTo(
-      new google.maps.LatLng(currentPosition.lat, currentPosition.lng),
-    );
-    mapRef.current.setZoom(13);
+    } catch (error) {
+      alert(error.message)
+    }
   };
 
   const test = () => {
@@ -109,17 +128,15 @@ const SearchBar = () => {
                     <Combobox.Option
                       key={place_id}
                       className={({ active }) =>
-                        `relative cursor-default select-none px-2 py-3 ${
-                          active ? "bg-brand-700 text-white" : "text-gray-500"
+                        `relative cursor-default select-none px-2 py-3 ${active ? "bg-brand-700 text-white" : "text-gray-500"
                         }`
                       }
                       value={description}
                     >
                       {({ selected }) => (
                         <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
+                          className={`block truncate ${selected ? "font-medium" : "font-normal"
+                            }`}
                         >
                           {description}
                         </span>

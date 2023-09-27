@@ -21,8 +21,8 @@ const defaultOptions = {
 };
 
 const Map = () => {
-  const { isSmallScreen, currentPosition, mapRef } = useGlobal();
-  const { hoveredMarkerId, result } = useMarkerContext();
+  const { isSmallScreen, currentPosition, mapRef, result } = useGlobal();
+  const { hoveredMarkerId } = useMarkerContext();
   const restaurants = getSearchLatLng(result);
   // const {latLng,id,name} = useMemo(() => getSearchLatLng(result), [result]);
 
@@ -75,21 +75,21 @@ const Map = () => {
             {/* 餐廳markers */}
             {restaurants
               ? restaurants.map(({ id, latLng, name }) => (
-                  <Marker
-                    key={id}
-                    position={latLng}
-                    icon={{
-                      url: "https://img.icons8.com/tiny-glyph/32/visit.png",
-                    }}
-                    title={name}
-                    animation={
-                      hoveredMarkerId === id
-                        ? google.maps.Animation.BOUNCE
-                        : null
-                    }
-                    onClick={() => setSelectedMarker(id)}
-                  />
-                ))
+                <Marker
+                  key={id}
+                  position={latLng}
+                  icon={{
+                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
+                  }}
+                  title={name}
+                  animation={
+                    hoveredMarkerId === id
+                      ? google.maps.Animation.BOUNCE
+                      : null
+                  }
+                  onClick={() => setSelectedMarker(id)}
+                />
+              ))
               : null}
           </GoogleMap>
         </div>

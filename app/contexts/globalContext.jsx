@@ -8,11 +8,12 @@ import {
 } from "react";
 
 const GlobalContext = createContext();
-const mmObj = window.matchMedia("(max-width: 768px)");
 
 export const GlobalContextComponent = ({ children }) => {
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
+  const [result, setResult] = useState(null);
+  const mmObj = window.matchMedia("(max-width: 768px)");
 
   const mapRef = useRef();
   const listRef = useRef();
@@ -53,6 +54,7 @@ export const GlobalContextComponent = ({ children }) => {
         setCurrentPosition,
         mapRef,
         listRef,
+        result, setResult
       }}
     >
       {children}
