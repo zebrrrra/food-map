@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import { useSearch } from "../contexts/searchContext";
+import { useGlobal } from "../contexts/globalContext";
 // import ResultMarkers from "./ResultMarkers";
 import useSelectMarkerHook from "../hooks/selectMarkerHook";
 import { useMarkerContext } from "../contexts/hoverMarkerContext";
@@ -21,7 +21,7 @@ const defaultOptions = {
 };
 
 const Map = () => {
-  const { isSmallScreen, currentPosition, mapRef } = useSearch();
+  const { isSmallScreen, currentPosition, mapRef } = useGlobal();
   const { hoveredMarkerId, result } = useMarkerContext();
   const restaurants = getSearchLatLng(result);
   // const {latLng,id,name} = useMemo(() => getSearchLatLng(result), [result]);
@@ -29,7 +29,7 @@ const Map = () => {
   const { setSelectedMarker } = useSelectMarkerHook();
   console.log(result);
   console.log(restaurants);
-  console.log(isSmallScreen);
+  console.log("視口大小", isSmallScreen);
 
   const latLng = new google.maps.LatLng(
     currentPosition.lat,

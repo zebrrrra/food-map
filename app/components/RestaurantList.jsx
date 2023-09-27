@@ -1,8 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
-import { useSearch } from "../contexts/searchContext";
-
+import { useGlobal } from "../contexts/globalContext";
 const RestaurantList = ({ data }) => {
-  const { listRef } = useSearch();
+  const { listRef } = useGlobal();
 
   return (
     <ul

@@ -2,12 +2,12 @@
 import RestaurantScroller from "@/app/components/RestaurantScroller";
 import { useQuery } from "@tanstack/react-query";
 import { nearbySearch } from "../../api/frontend/nearbySearch";
-import { useSearch } from "../../contexts/searchContext";
+import { useGlobal } from "../../contexts/globalContext";
 import Loading from "@/app/components/Loading";
 import { useMarkerContext } from "@/app/contexts/hoverMarkerContext";
 import { useEffect } from "react";
 const SearchPage = ({ params }) => {
-  const { currentPosition, mapRef } = useSearch();
+  const { currentPosition, mapRef } = useGlobal();
   const { setResult } = useMarkerContext();
   // keyword, @lat,lng, options=
   const slugs = params.slug.map((item) => decodeURIComponent(item));
@@ -30,12 +30,13 @@ const SearchPage = ({ params }) => {
           currentPosition.lat,
           currentPosition.lng,
         ),
-        refetchOnWindowFocus: false,
       }),
+    refetchOnWindowFocus: false,
   });
   // 供restaurant Marker使用
   useEffect(() => {
     if (data) {
+      console.log("data", data);
       setResult(data);
     }
   }, [isSuccess]);

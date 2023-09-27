@@ -5,14 +5,14 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
 import FilterModal from "./FilterModal";
 import usePlacesAutocomplete from "use-places-autocomplete";
-import { useSearch } from "../contexts/searchContext";
+import { useGlobal } from "../contexts/globalContext";
 import { useRouter } from "next/navigation";
 // import { getNearbySearch } from "../api/frontend/getNearbySearch";
 // import { useMarkerContext } from "../contexts/hoverMarkerContext";
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
-  const { currentPosition, mapRef } = useSearch();
+  const { currentPosition, mapRef } = useGlobal();
   const router = useRouter();
   const northEast = new google.maps.LatLng(
     currentPosition.lat + 0.05,

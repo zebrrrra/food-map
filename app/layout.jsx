@@ -6,7 +6,7 @@ import SearchBar from "./components/SearchBar";
 import LocationButton from "./components/LocationButton";
 // import ResultMarkers from "./components/ResultMarkers";
 import Providers from "./components/Providers";
-import { SearchContextComponent } from "./contexts/searchContext";
+import { GlobalContextComponent } from "./contexts/globalContext";
 import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
 import "./globals.css";
 import { Raleway } from "next/font/google";
@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
       <body className={`${raleway.className}`}>
         {isLoaded && (
           <Providers>
-            <SearchContextComponent>
+            <GlobalContextComponent>
               <div className="relative h-screen w-full">
                 <MarkerContextProvider>
                   <Map />
@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
               </div>
               <SearchBar />
               <LocationButton />
-            </SearchContextComponent>
+            </GlobalContextComponent>
           </Providers>
         )}
       </body>

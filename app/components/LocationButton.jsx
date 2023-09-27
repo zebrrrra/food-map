@@ -1,10 +1,9 @@
 import Image from "next/image";
 import location from "@/public/images/worldwideLocation.png";
-// TODO mapRef取得
-import { useSearch } from "../contexts/searchContext";
+import { useGlobal } from "../contexts/globalContext";
 
 const LocationButton = () => {
-  const { mapRef, setCurrentPosition } = useSearch();
+  const { mapRef, setCurrentPosition } = useGlobal();
   const handlePanToLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       // setCurrentPosition((prev) => ({

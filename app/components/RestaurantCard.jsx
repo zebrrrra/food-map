@@ -3,14 +3,14 @@ import Image from "next/image";
 import ClosedLabel from "./closedLabel";
 import OpenLabel from "./openLabel";
 import RatingStar from "./RatingStar";
-import { useSearch } from "../contexts/searchContext";
+import { useGlobal } from "../contexts/globalContext";
 import { useMarkerContext } from "../contexts/hoverMarkerContext";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { dollar } from "../utils/price";
 import Link from "next/link";
 
 const RestaurantCard = ({ id, data }) => {
-  const { isSmallScreen } = useSearch();
+  const { isSmallScreen } = useGlobal();
   const { setHoveredMarkerId } = useMarkerContext();
 
   const handleHover = (value) => {
@@ -19,9 +19,9 @@ const RestaurantCard = ({ id, data }) => {
     }
   };
 
-  const photoUrl =
-    Object.keys(data).includes("photos") &&
-    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+  // const photoUrl =
+  //   Object.keys(data).includes("photos") &&
+  //   `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
   const place = data.plus_code.compound_code.match(/[\u4e00-\u9fa5]+/);
 

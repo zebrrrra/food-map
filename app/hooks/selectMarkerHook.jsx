@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { useSearch } from "../contexts/searchContext";
+import { useGlobal } from "../contexts/globalContext";
 import { useRouter } from "next/navigation";
 
 const useSelectMarkerHook = () => {
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const { isSmallScreen, listRef } = useSearch();
+  const { isSmallScreen, listRef } = useGlobal();
   const router = useRouter();
   useEffect(() => {
     // 每次點擊marker
