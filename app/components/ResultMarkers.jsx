@@ -7,13 +7,13 @@ import { useMemo } from "react";
 
 const ResultMarkers = () => {
   const { result } = useSearch();
-  const restaurants = useMemo(() => getSearchLatLng(result), [result]);
+  const restaurants = getSearchLatLng(result)
   const { hoveredMarkerId } = useMarkerContext();
   const { setSelectedMarker, selectedMarker } = useSelectMarkerHook();
-
+  console.log('marker', result)
   return (
     <>
-      {result &&
+      {restaurants &&
         restaurants.map((item) => (
           <Marker
             key={item.id}
