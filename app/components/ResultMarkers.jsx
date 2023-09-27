@@ -10,7 +10,7 @@ const ResultMarkers = () => {
   const restaurants = useMemo(() => getSearchLatLng(result), [result]);
   const { hoveredMarkerId } = useMarkerContext();
   const { setSelectedMarker, selectedMarker } = useSelectMarkerHook();
-
+  console.log('marker', result)
   return (
     <>
       {result &&
