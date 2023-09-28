@@ -15,10 +15,12 @@ const DetailPage = ({ params }) => {
   const { isSmallScreen } = useSearch();
   const { getDetailData } = useSelectMarkerHook();
   const router = useRouter();
+  console.log(params.slug)
+  // TODO getDetailData需要重構（參考main）而且要移到而且要移到app/api/frontend/placeDetail
 
   useEffect(() => {
     const handleDetailData = async () => {
-      const data = await getDetailData(params.place_id);
+      const data = await getDetailData(params.slug[1]);
       if (data) {
         const { distance, detail } = data;
         setDetail(detail);
@@ -36,7 +38,7 @@ const DetailPage = ({ params }) => {
       setIsOpenModal(false);
       setIsOpenDetail(false);
     };
-  }, [params.place_id]);
+  }, [params.slug[1]]);
 
   const handleClose = () => {
     if (isSmallScreen) {

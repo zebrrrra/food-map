@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 
 const RestaurantScroller = () => {
   const router = useRouter();
-  const handleCardClick = (id) => {
-    router.push(`/detail/${id}`);
+  const handleCardClick = (value) => {
+    router.push(`/detail/${value.name}/${value.id}`);
   };
 
   return (

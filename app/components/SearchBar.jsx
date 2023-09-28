@@ -36,6 +36,7 @@ const SearchBar = () => {
       locationRestriction: new google.maps.LatLngBounds(southWest, northEast),
       type: ["restaurant"],
     },
+    debounce: 1000
   });
 
   const onSearchNavigate = async (e) => {
@@ -43,30 +44,36 @@ const SearchBar = () => {
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
+    // 已檢查options在空物件情況或未選擇價格情況都能搜尋
     const encodeOptions = encodeURIComponent(JSON.stringify(options));
+    try {
+      const data = await getNearbySearch({
+        keyword: value,
+        lat: currentPosition.lat,
+        lng: currentPosition.lng,
+        encodeOptions,
+      });
 
-    const data = await getNearbySearch({
-      keyword: value,
-      lat: currentPosition.lat,
-      lng: currentPosition.lng,
-      encodeOptions,
-    });
-
-    if (data.status === "OK") {
-      const searchData = data.results.filter((item) =>
-        Object.keys(item).includes("opening_hours"),
-      );
-      console.log(searchData);
-      setResult(searchData);
-    } else if (data.status === "ZERO_RESULTS") {
-      alert("無搜尋結果，請重新搜尋");
-    } else {
-      console.log(data.status);
+      console.log(data)
+      if (data.status === "OK") {
+        const searchData = data.results.filter((item) =>
+          Object.keys(item).includes("opening_hours"),
+        );
+        console.log(searchData);
+        setResult(searchData);
+        router.push(
+          `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
+        );
+      } else if (data.status === "ZERO_RESULTS") {
+        alert("無搜尋結果，請重新搜尋");
+      } else {
+        console.log(data.status);
+        alert(data.status)
+      }
+    } catch (error) {
+      console.error(error);
+      alert("發生錯誤：" + error.message);
     }
-
-    router.push(
-      `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
-    );
   };
 
   const test = () => {
@@ -125,17 +132,15 @@ const SearchBar = () => {
                     <Combobox.Option
                       key={place_id}
                       className={({ active }) =>
-                        `relative cursor-default select-none px-2 py-3 ${
-                          active ? "bg-brand-700 text-white" : "text-gray-500"
+                        `relative cursor-default select-none px-2 py-3 ${active ? "bg-brand-700 text-white" : "text-gray-500"
                         }`
                       }
                       value={description}
                     >
                       {({ selected }) => (
                         <span
-                          className={`block truncate ${
-                            selected ? "font-medium" : "font-normal"
-                          }`}
+                          className={`block truncate ${selected ? "font-medium" : "font-normal"
+                            }`}
                         >
                           {description}
                         </span>

@@ -9,6 +9,7 @@ export const GET = async (request) => {
   try {
     const { searchParams } = new URL(request.url);
     const obj = Object.fromEntries(searchParams.entries());
+    console.log(obj)
 
     const keyword = obj["keyword"];
     const lat = obj.lat;

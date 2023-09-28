@@ -13,17 +13,17 @@ const containerStyle = {
   width: "100%",
   height: "100%",
 };
-const defaultOptions = {
-  strokeOpacity: 0.5,
-  strokeWeight: 2,
-  clickable: false,
-  draggable: false,
-  editable: false,
-  visible: true,
-};
+// const defaultOptions = {
+//   strokeOpacity: 0.5,
+//   strokeWeight: 2,
+//   clickable: false,
+//   draggable: false,
+//   editable: false,
+//   visible: true,
+// };
 
 const Map = ({ children }) => {
-  const [markerName, setMarkerName] = useState(""); //infoWindow使用
+  // const [markerName, setMarkerName] = useState(""); //infoWindow使用
   const { isSmallScreen, currentPosition, mapRef } = useSearch();
 
   console.log(isSmallScreen);

@@ -21,7 +21,7 @@ const libraries = ["places", "routes"];
 export default function RootLayout({ children }) {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    libraries: useMemo(() => libraries, []),
+    libraries: libraries,
     region: "TW",
     language: "zh-TW",
   });

@@ -1,33 +1,31 @@
-import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 
 const SearchContext = createContext();
 export const SearchContextComponent = ({ children }) => {
   const [result, setResult] = useState(null);
   const [isSmallScreen, setIsSmallScreen] = useState(true);
   const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
-
+  const mmObj = window.matchMedia("(max-width: 768px)");
   const mapRef = useRef();
   const listRef = useRef();
 
-  useEffect(() => {
-    const mmObj = window.matchMedia("(max-width: 768px)");
-    const handleResize = () => {
-      if (mmObj.matches) {
-        /* 窗口小于或等于 768 像素 */
-        setIsSmallScreen(true);
-      } else {
-        /*窗口大于 768 像素 */
-        setIsSmallScreen(false);
-      }
-    };
+  const handleResize = useCallback(() => {
+    if (mmObj.matches) {
+      /* 視窗小於或等768 像素 */
+      setIsSmallScreen(true);
+    } else {
+      /*視窗大於768像素 */
+      setIsSmallScreen(false);
+    }
+  }, [])
 
-    handleResize();
-    mmObj.addEventListener("resize", handleResize);
+  useEffect(() => {
+    mmObj.addEventListener("change", handleResize);
 
     return () => {
-      mmObj.removeEventListener("resize", handleResize);
+      mmObj.removeEventListener("change", handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {

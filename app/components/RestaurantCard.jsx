@@ -23,13 +23,14 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
     `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
   const place = data.plus_code.compound_code.match(/[\u4e00-\u9fa5]+/);
-
+  // compound_code:"X6X2+5G 中西區 台南市"
+  // place:["中西區","台南市"]
   return (
     <li
       className="flex max-w-[300px] snap-start rounded-xl bg-white px-4 pt-4 shadow-lg md:h-[150px] md:max-w-full md:cursor-pointer md:flex-row md:overflow-hidden md:px-2 md:pb-2"
       id={id}
       onMouseOver={() => handleHover(id)}
-      onClick={() => onCardClick(id)}
+      onClick={() => onCardClick({ id, name: data.name })}
     >
       <div className="h-[112px] max-w-full  md:flex md:h-full md:w-[80px] lg:w-[140px]">
         {Object.keys(data).includes("photos") ? (
@@ -52,7 +53,9 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
           </h3>
 
           <div className="h-full w-[60px] md:col-span-1">
-            {Object.keys(data).includes("opening_hours") ? (
+            {/* TODO 在上層已經篩掉不含opening_hours的項目 */}
+            {data.opening_hours.open_now ? (<OpenLabel />) : (<ClosedLabel />)}
+            {/* {Object.keys(data).includes("opening_hours") ? (
               data.opening_hours.open_now ? (
                 <OpenLabel />
               ) : (
@@ -60,7 +63,7 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
               )
             ) : (
               <span className="flex w-[45px] justify-center">無資訊</span>
-            )}
+            )} */}
           </div>
         </div>
         <div className=" mt-1 flex items-center justify-start">
