@@ -1,4 +1,11 @@
-import { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
 
 const SearchContext = createContext();
 export const SearchContextComponent = ({ children }) => {
@@ -17,7 +24,7 @@ export const SearchContextComponent = ({ children }) => {
       /*視窗大於768像素 */
       setIsSmallScreen(false);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     mmObj.addEventListener("change", handleResize);

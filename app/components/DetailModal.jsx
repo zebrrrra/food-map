@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { getDay } from "../utils/getDay";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import {
@@ -13,10 +13,10 @@ import Carousel from "./Carousel";
 import RatingStar from "./RatingStar";
 import ReviewCard from "./ReviewCard";
 
-const DetailModal = ({ isOpen, onClose, detail, distance }) => {
+const DetailModal = ({ isOpen, onClose, data }) => {
   const today = getDay({
     index: new Date().getDay(),
-    array: detail.data.opening_hours.weekday_text,
+    array: data.detail.data.opening_hours.weekday_text,
   });
   return (
     <Transition show={isOpen} as={React.Fragment}>
@@ -58,36 +58,36 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                 >
                   <ChevronDownIcon className="w-6" />
                 </button>
-                <Carousel photos={detail.photos} />
+                <Carousel photos={data.detail.photos} />
 
                 {/* 輪播圖以下詳細說明 */}
                 <div className="mt-4 flex items-center justify-between">
                   <h3 className="text-green-600 text-3xl">
-                    {detail.data.name}
+                    {data.detail.data.name}
                   </h3>
                   <div>
                     <div className="mb-px flex items-center ">
                       <TruckIcon className="h-6 w-6" />
-                      <span>{distance.duration}</span>
+                      <span>{data.distance.duration}</span>
                     </div>
                     <div className="flex items-center">
                       <MapPinIcon className="h-6 w-6" />
-                      <span>{distance.distance}</span>
+                      <span>{data.distance.distance}</span>
                     </div>
                   </div>
                 </div>
                 <div className="mt-1 flex items-center">
-                  <RatingStar rating={detail.data.rating} />
-                  <span>{detail.data.rating}</span>
+                  <RatingStar rating={data.detail.data.rating} />
+                  <span>{data.detail.data.rating}</span>
                 </div>
                 <div className="divide-y">
                   <div className="flex py-4">
                     <MapPinIcon className="mr-4 h-6 w-6" />
-                    <h4>{detail.data.formatted_address}</h4>
+                    <h4>{data.detail.data.formatted_address}</h4>
                   </div>
                   <div className="flex py-4">
                     <PhoneIcon className="mr-4 h-6 w-6" />
-                    <h4>{detail.data.formatted_phone_number}</h4>
+                    <h4>{data.detail.data.formatted_phone_number}</h4>
                   </div>
                   <Menu as="div" className="flex items-center py-4">
                     <ClockIcon className="mr-4 h-6 w-6" />
@@ -97,7 +97,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                       <Menu.Item>
                         {({ active }) => (
                           <>
-                            {detail.data.opening_hours.weekday_text.map(
+                            {data.detail.data.opening_hours.weekday_text.map(
                               (text, index) => (
                                 <div key={index}>{text}</div>
                               ),
@@ -111,7 +111,7 @@ const DetailModal = ({ isOpen, onClose, detail, distance }) => {
                 {/* 評論區 */}
                 <h4 className="mt-4 text-2xl">評論</h4>
                 <ol className="mt-4 divide-y">
-                  {detail.data.reviews.map((item, index) => (
+                  {data.detail.data.reviews.map((item, index) => (
                     <ReviewCard key={index} data={item} />
                   ))}
                 </ol>

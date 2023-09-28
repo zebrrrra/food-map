@@ -7,7 +7,7 @@ import FilterModal from "./FilterModal";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useSearch } from "../contexts/searchContext";
 import { useRouter } from "next/navigation";
-import { getNearbySearch } from "../api/frontend/getNearbySearch";
+import { nearbySearch } from "../api/frontend/nearbySearch";
 
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
@@ -36,7 +36,7 @@ const SearchBar = () => {
       locationRestriction: new google.maps.LatLngBounds(southWest, northEast),
       type: ["restaurant"],
     },
-    debounce: 1000
+    debounce: 1000,
   });
 
   const onSearchNavigate = async (e) => {
@@ -47,14 +47,14 @@ const SearchBar = () => {
     // 已檢查options在空物件情況或未選擇價格情況都能搜尋
     const encodeOptions = encodeURIComponent(JSON.stringify(options));
     try {
-      const data = await getNearbySearch({
+      const data = await nearbySearch({
         keyword: value,
         lat: currentPosition.lat,
         lng: currentPosition.lng,
         encodeOptions,
       });
 
-      console.log(data)
+      console.log(data);
       if (data.status === "OK") {
         const searchData = data.results.filter((item) =>
           Object.keys(item).includes("opening_hours"),
@@ -68,7 +68,7 @@ const SearchBar = () => {
         alert("無搜尋結果，請重新搜尋");
       } else {
         console.log(data.status);
-        alert(data.status)
+        alert(data.status);
       }
     } catch (error) {
       console.error(error);
@@ -132,15 +132,17 @@ const SearchBar = () => {
                     <Combobox.Option
                       key={place_id}
                       className={({ active }) =>
-                        `relative cursor-default select-none px-2 py-3 ${active ? "bg-brand-700 text-white" : "text-gray-500"
+                        `relative cursor-default select-none px-2 py-3 ${
+                          active ? "bg-brand-700 text-white" : "text-gray-500"
                         }`
                       }
                       value={description}
                     >
                       {({ selected }) => (
                         <span
-                          className={`block truncate ${selected ? "font-medium" : "font-normal"
-                            }`}
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
                         >
                           {description}
                         </span>

@@ -1,33 +1,4 @@
-import { NextResponse } from "next/server";
-import { priceFormat } from "../utils/price";
-export const getNearbySearch = ({ map, keyword, options, location }) => {
-  return new Promise((resolve, reject) => {
-    const priceArr = options.prices;
-    const service = new google.maps.places.PlacesService(map);
-    const request = {
-      keyword,
-      language: "zh-TW",
-      region: "TW",
-      type: ["restaurant"],
-      openNow: options.openNow === "yes",
-      radius: options.distance,
-      location,
-      maxPriceLevel: priceFormat(priceArr).max,
-      minPriceLevel: priceFormat(priceArr).min,
-    };
-
-    service.nearbySearch(request, (results, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        // 處理搜索結果
-        resolve(results);
-      } else {
-        reject("搜尋失敗", status);
-      }
-    });
-  });
-};
-
-export const getDistance = ({ id, location }) => {
+const getDistance = ({ id, location }) => {
   return new Promise((resolve, reject) => {
     const DistanceService = new google.maps.DistanceMatrixService();
     const distanceRequest = {
@@ -44,13 +15,13 @@ export const getDistance = ({ id, location }) => {
         };
         resolve(data);
       } else {
-        reject("請求距離失敗", status);
+        reject(new Error(`請求距離失敗:${status}`));
       }
     });
   });
 };
 
-export const getDetail = ({ map, id }) => {
+const getDetail = ({ map, id }) => {
   return new Promise((resolve, reject) => {
     const service = new google.maps.places.PlacesService(map);
     const detailRequest = {
@@ -74,8 +45,22 @@ export const getDetail = ({ map, id }) => {
         );
         resolve({ photos: photoArr, data: results });
       } else {
-        reject("請求詳細失敗", status);
+        reject(new Error(`請求詳細失敗:${status}`));
       }
     });
   });
+};
+
+export const getDetailData = async ({ id, map, location }) => {
+  try {
+    const distanceData = getDistance({ id, location });
+    const detailData = getDetail({ map, id });
+    const [distance, detail] = await Promise.all([distanceData, detailData]);
+    console.log(distance);
+    console.log(detail);
+    return { distance, detail };
+  } catch (error) {
+    alert(error.message);
+    console.error(error.message);
+  }
 };

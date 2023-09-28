@@ -51,19 +51,8 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
           <h3 className="  overflow-hidden text-ellipsis whitespace-nowrap text-lg md:col-span-2 ">
             {data.name}
           </h3>
-
           <div className="h-full w-[60px] md:col-span-1">
-            {/* TODO 在上層已經篩掉不含opening_hours的項目 */}
-            {data.opening_hours.open_now ? (<OpenLabel />) : (<ClosedLabel />)}
-            {/* {Object.keys(data).includes("opening_hours") ? (
-              data.opening_hours.open_now ? (
-                <OpenLabel />
-              ) : (
-                <ClosedLabel />
-              )
-            ) : (
-              <span className="flex w-[45px] justify-center">無資訊</span>
-            )} */}
+            {data.opening_hours.open_now ? <OpenLabel /> : <ClosedLabel />}
           </div>
         </div>
         <div className=" mt-1 flex items-center justify-start">

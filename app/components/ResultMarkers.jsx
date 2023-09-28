@@ -3,14 +3,12 @@ import { getSearchLatLng } from "../utils/getSearchLatLng";
 import { useSearch } from "../contexts/searchContext";
 import { useMarkerContext } from "../contexts/hoverMarkerContext";
 import useSelectMarkerHook from "../hooks/selectMarkerHook";
-import { useMemo } from "react";
 
 const ResultMarkers = () => {
   const { result } = useSearch();
-  const restaurants = getSearchLatLng(result)
+  const restaurants = getSearchLatLng(result);
   const { hoveredMarkerId } = useMarkerContext();
-  const { setSelectedMarker, selectedMarker } = useSelectMarkerHook();
-  console.log('marker', restaurants)
+  const { setSelectedMarker } = useSelectMarkerHook();
   return (
     <>
       {result &&
@@ -25,7 +23,7 @@ const ResultMarkers = () => {
             animation={
               hoveredMarkerId === item.id ? google.maps.Animation.BOUNCE : null
             }
-            onClick={() => setSelectedMarker(item.id)}
+            onClick={() => setSelectedMarker({ name: item.name, id: item.id })}
           />
         ))}
     </>

@@ -1,23 +1,22 @@
 import Image from "next/image";
 import location from "@/public/images/worldwideLocation.png";
-// TODO mapRef取得
 import { useSearch } from "../contexts/searchContext";
 
 const LocationButton = () => {
   const { mapRef, setCurrentPosition } = useSearch();
   const handlePanToLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      // setCurrentPosition((prev) => ({
-      //   ...prev,
-      //   lat: position.coords.latitude,
-      //   lng: position.coords.longitude,
-      // }));
-      setCurrentPosition(
-        new google.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude,
-        ),
-      );
+      setCurrentPosition((prev) => ({
+        ...prev,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }));
+      // setCurrentPosition(
+      //   new google.maps.LatLng(
+      //     position.coords.latitude,
+      //     position.coords.longitude,
+      //   ),
+      // );
 
       mapRef.current.panTo(
         new google.maps.LatLng(

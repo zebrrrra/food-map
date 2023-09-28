@@ -9,6 +9,7 @@ import { SearchContextComponent } from "./contexts/searchContext";
 import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
 import "./globals.css";
 import { Raleway } from "next/font/google";
+import Providers from "./components/Providers";
 
 const raleway = Raleway({ weight: "400", subsets: ["latin"] });
 // matadata不可在client component export
@@ -29,18 +30,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${raleway.className}`}>
         {isLoaded && (
-          <SearchContextComponent>
-            <div className="relative h-screen w-full">
-              <MarkerContextProvider>
-                <Map>
-                  <ResultMarkers />
-                  {children}
-                </Map>
-              </MarkerContextProvider>
-            </div>
-            <SearchBar />
-            <LocationButton />
-          </SearchContextComponent>
+          <Providers>
+            <SearchContextComponent>
+              <div className="relative h-screen w-full">
+                <MarkerContextProvider>
+                  <Map>
+                    <ResultMarkers />
+                    {children}
+                  </Map>
+                </MarkerContextProvider>
+              </div>
+              <SearchBar />
+              <LocationButton />
+            </SearchContextComponent>
+          </Providers>
         )}
       </body>
     </html>
