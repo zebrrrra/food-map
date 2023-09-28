@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 import Detail from "@/app/components/Detail";
 import DetailModal from "@/app/components/DetailModal";
-import { useSearch } from "@/app/contexts/searchContext";
+import { useGlobal } from "@/app/contexts/globalContext";
 import { useRouter } from "next/navigation";
 import { getDetailData } from "@/app/api/frontend/placeDetail";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "@/app/search/loading";
+import Loading from "@/app/components/Loading";
 
 const DetailPage = ({ params }) => {
   const [isOpenModal, setIsOpenModal] = useState(true);
-  const { isSmallScreen, mapRef, currentPosition } = useSearch();
+  const { isSmallScreen, mapRef, currentPosition } = useGlobal();
   const router = useRouter();
   const latLng = new google.maps.LatLng(
     currentPosition.lat,

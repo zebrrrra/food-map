@@ -1,5 +1,5 @@
 export const getPosition = (map) => {
-  // 嘗試不用state
+
   if (!map) return;
   navigator.geolocation.getCurrentPosition((position) => {
     const origin = new google.maps.LatLng(

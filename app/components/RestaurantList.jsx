@@ -1,10 +1,7 @@
 import RestaurantCard from "./RestaurantCard";
 import { useGlobal } from "../contexts/globalContext";
-import { useMarkerContext } from "../contexts/hoverMarkerContext";
-const RestaurantList = () => {
+const RestaurantList = ({ onCardClick }) => {
   const { listRef, result } = useGlobal();
-  // const { result } = useMarkerContext()
-  console.log(result);
 
   return (
     <ul
@@ -13,7 +10,7 @@ const RestaurantList = () => {
     >
       {result &&
         result.map((item) => (
-          <RestaurantCard id={item.place_id} key={item.place_id} data={item} />
+          <RestaurantCard id={item.place_id} key={item.place_id} data={item} onCardClick={onCardClick} />
         ))}
     </ul>
   );

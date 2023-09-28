@@ -9,7 +9,5 @@ export const getSearchLatLng = (data) => {
     name,
   }));
 
-  console.log(locationArr);
-
   return locationArr;
 };

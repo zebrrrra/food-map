@@ -1,5 +1,4 @@
 export const priceFormat = (data) => {
-  console.log(data);
   const priceLevels = {
     low: { max: 1, min: 0 },
     middle: { max: 3, min: 1 },

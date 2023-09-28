@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
@@ -11,8 +11,7 @@ import { nearbySearch } from "../api/frontend/nearbySearch";
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
-  const { currentPosition, mapRef, setResult } = useGlobal();
-  // const { setResult } = useMarkerContext()
+  const { currentPosition, setResult } = useGlobal();
   const router = useRouter();
   const northEast = new google.maps.LatLng(
     currentPosition.lat + 0.05,
@@ -44,8 +43,8 @@ const SearchBar = () => {
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
-    // 已檢查options在空物件情況或未選擇價格情況都能搜尋
     const encodeOptions = encodeURIComponent(JSON.stringify(options));
+
     try {
       const data = await nearbySearch({
         keyword: value,
@@ -54,12 +53,10 @@ const SearchBar = () => {
         encodeOptions,
       });
 
-      console.log(data);
       if (data.status === "OK") {
         const searchData = data.results.filter((item) =>
           Object.keys(item).includes("opening_hours"),
         );
-        console.log(searchData);
         setResult(searchData);
         router.push(
           `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
@@ -67,19 +64,12 @@ const SearchBar = () => {
       } else if (data.status === "ZERO_RESULTS") {
         alert("無搜尋結果，請重新搜尋");
       } else {
-        console.log(data.status);
         alert(data.status);
       }
     } catch (error) {
       console.error(error);
-      alert("發生錯誤：" + error.message);
+      alert(`發生錯誤：${error.message}`);
     }
-  };
-
-
-  const test = () => {
-    console.log("options", options);
-    console.log("location", currentPosition);
   };
 
   return (
@@ -92,7 +82,6 @@ const SearchBar = () => {
       <div
         className={`fixed left-4 top-4 w-[50vw] md:left-0 md:top-0 md:ml-2 md:mt-1 md:w-[30vw] md:translate-x-[unset]`}
       >
-        <button onClick={test}>測試測試</button>
         <Combobox value={value} onChange={setValue}>
           <div className="relative mt-1 md:w-[calc(18rem-58px)] lg:w-[412px]">
             {/* filter鈕 */}

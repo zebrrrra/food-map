@@ -56,8 +56,6 @@ export const getDetailData = async ({ id, map, location }) => {
     const distanceData = getDistance({ id, location });
     const detailData = getDetail({ map, id });
     const [distance, detail] = await Promise.all([distanceData, detailData]);
-    console.log(distance);
-    console.log(detail);
     return { distance, detail };
   } catch (error) {
     alert(error.message);

@@ -9,9 +9,7 @@ const containerStyle = {
 };
 
 const Map = ({ children }) => {
-  const { isSmallScreen, currentPosition, mapRef } = useGlobal();
-
-  console.log("視口大小", isSmallScreen);
+  const { currentPosition, mapRef } = useGlobal();
 
   const latLng = new google.maps.LatLng(
     currentPosition.lat,
