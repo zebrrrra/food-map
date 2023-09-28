@@ -90,16 +90,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
       - name: Set API Key
         run: |
           echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
-      - name: Deploy Application
-        run: |
-          # Example: Replace 'your-deploy-command' with your actual deployment command
-          YOUR_DEPLOY_COMMAND
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
 
 
 
