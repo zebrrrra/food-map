@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "@/app/search/loading";
 
 const DetailPage = ({ params }) => {
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModal, setIsOpenModal] = useState(true);
   const { isSmallScreen, mapRef, currentPosition } = useSearch();
   const router = useRouter();
   const latLng = new google.maps.LatLng(
