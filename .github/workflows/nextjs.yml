@@ -92,7 +92,7 @@ jobs:
     steps:
       - name: Set API Key
         run: |
-          echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.API_KEY }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${{ secrets.API_KEY }}" >> .env.local
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
