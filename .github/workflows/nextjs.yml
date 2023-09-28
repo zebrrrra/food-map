@@ -99,7 +99,7 @@ jobs:
       - name: Deploy Application
         run: |
           # Example: Replace 'your-deploy-command' with your actual deployment command
-        YOUR_DEPLOY_COMMAND
+          YOUR_DEPLOY_COMMAND
 
 
 
