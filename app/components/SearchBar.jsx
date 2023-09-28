@@ -71,8 +71,10 @@ const SearchBar = () => {
 
     } catch (error) {
       alert(error.message)
+      console.log(error.message)
     }
   };
+
 
   const test = () => {
     console.log("options", options);

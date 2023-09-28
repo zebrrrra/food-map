@@ -29,10 +29,10 @@ export const GlobalContextComponent = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    mmObj.addEventListener("resize", handleResize);
+    mmObj.addEventListener("change", handleResize);
 
     return () => {
-      mmObj.removeEventListener("resize", handleResize);
+      mmObj.removeEventListener("change", handleResize);
     };
   }, [handleResize]);
 

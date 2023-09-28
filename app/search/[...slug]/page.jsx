@@ -8,8 +8,8 @@ import { useMarkerContext } from "@/app/contexts/hoverMarkerContext";
 import { useEffect } from "react";
 
 const SearchPage = ({ params }) => {
-  const { currentPosition, mapRef } = useGlobal();
-  const { setResult } = useMarkerContext();
+  const { currentPosition, mapRef, setResult } = useGlobal();
+  // const { setResult } = useMarkerContext();
   // keyword, @lat,lng, options=
   const slugs = params.slug.map((item) => decodeURIComponent(item));
   console.log(JSON.parse(slugs[2].split("=")[1]));
@@ -34,7 +34,8 @@ const SearchPage = ({ params }) => {
   //     }),
   //   refetchOnWindowFocus: false,
   // });
-  // 供restaurant Marker使用
+  // // 供restaurant Marker使用
+  // console.log('isSuccess', isSuccess)
   // useEffect(() => {
   //   if (data) {
   //     console.log("data", data);

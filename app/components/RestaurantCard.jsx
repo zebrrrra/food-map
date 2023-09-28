@@ -58,15 +58,11 @@ const RestaurantCard = ({ id, data }) => {
             </h3>
 
             <div className="h-full w-[60px] md:col-span-1">
-              {Object.keys(data).includes("opening_hours") ? (
-                data.opening_hours.open_now ? (
-                  <OpenLabel />
-                ) : (
-                  <ClosedLabel />
-                )
+              {data.opening_hours.open_now ? (<OpenLabel />) : (<ClosedLabel />)}
+              {/* {Object.keys(data).includes("opening_hours") ? (
               ) : (
                 <span className="flex w-[45px] justify-center">無資訊</span>
-              )}
+              )} */}
             </div>
           </div>
           <div className=" mt-1 flex items-center justify-start">

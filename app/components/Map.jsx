@@ -11,14 +11,14 @@ const containerStyle = {
   width: "100%",
   height: "100%",
 };
-const defaultOptions = {
-  strokeOpacity: 0.5,
-  strokeWeight: 2,
-  clickable: false,
-  draggable: false,
-  editable: false,
-  visible: true,
-};
+// const defaultOptions = {
+//   strokeOpacity: 0.5,
+//   strokeWeight: 2,
+//   clickable: false,
+//   draggable: false,
+//   editable: false,
+//   visible: true,
+// };
 
 const Map = () => {
   const { isSmallScreen, currentPosition, mapRef, result } = useGlobal();
@@ -73,24 +73,22 @@ const Map = () => {
             {latLng && <Marker position={latLng} />}
 
             {/* 餐廳markers */}
-            {restaurants
-              ? restaurants.map(({ id, latLng, name }) => (
-                <Marker
-                  key={id}
-                  position={latLng}
-                  icon={{
-                    url: "https://img.icons8.com/tiny-glyph/32/visit.png",
-                  }}
-                  title={name}
-                  animation={
-                    hoveredMarkerId === id
-                      ? google.maps.Animation.BOUNCE
-                      : null
-                  }
-                  onClick={() => setSelectedMarker(id)}
-                />
-              ))
-              : null}
+            {restaurants && restaurants.map(({ id, location, name }) => (
+              <Marker
+                key={id}
+                position={location}
+                icon={{
+                  url: "https://img.icons8.com/tiny-glyph/32/visit.png",
+                }}
+                title={name}
+                animation={
+                  hoveredMarkerId === id
+                    ? google.maps.Animation.BOUNCE
+                    : null
+                }
+                onClick={() => setSelectedMarker(id)}
+              />
+            ))}
           </GoogleMap>
         </div>
       </div>
