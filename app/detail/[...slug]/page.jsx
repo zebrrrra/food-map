@@ -2,15 +2,15 @@
 import React, { useState } from "react";
 import Detail from "@/app/components/Detail";
 import DetailModal from "@/app/components/DetailModal";
-import { useGlobal } from "@/app/contexts/globalContext";
+import { useSearch } from "@/app/contexts/searchContext";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import { getDetailData } from "@/app/api/frontend/placeDetail";
-import Loading from "@/app/components/Loading";
+import { useQuery } from "@tanstack/react-query";
+import Loading from "@/app/search/loading";
 
 const DetailPage = ({ params }) => {
   const [isOpenModal, setIsOpenModal] = useState(true);
-  const { isSmallScreen, mapRef, currentPosition } = useGlobal();
+  const { isSmallScreen, mapRef, currentPosition } = useSearch();
   const router = useRouter();
   const latLng = new google.maps.LatLng(
     currentPosition.lat,
@@ -18,7 +18,7 @@ const DetailPage = ({ params }) => {
   );
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getDetail", { id: params.place_id }],
+    queryKey: ["getDetail", { id: params.slug[1] }],
     queryFn: ({ queryKey }) =>
       getDetailData({
         id: queryKey[1].id,
@@ -26,12 +26,11 @@ const DetailPage = ({ params }) => {
         location: latLng,
       }),
     refetchOnWindowFocus: false,
+    retry: false,
   });
-
   if (isLoading) {
     return <Loading />;
   }
-
   const handleClose = () => {
     if (isSmallScreen) {
       setIsOpenModal(false);
@@ -40,15 +39,21 @@ const DetailPage = ({ params }) => {
   };
 
   return (
-    data && (
-      <>
-        {isSmallScreen ? (
-          <DetailModal data={data} isOpen={isOpenModal} onClose={handleClose} />
-        ) : (
-          <Detail data={data} onClose={handleClose} />
-        )}
-      </>
-    )
+    <>
+      {data && (
+        <>
+          {isSmallScreen ? (
+            <DetailModal
+              data={data}
+              isOpen={isOpenModal}
+              onClose={handleClose}
+            />
+          ) : (
+            <Detail data={data} onClose={handleClose} />
+          )}
+        </>
+      )}
+    </>
   );
 };
 

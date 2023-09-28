@@ -8,8 +8,6 @@ import usePlacesAutocomplete from "use-places-autocomplete";
 import { useGlobal } from "../contexts/globalContext";
 import { useRouter } from "next/navigation";
 import { nearbySearch } from "../api/frontend/nearbySearch";
-import { useMarkerContext } from "../contexts/hoverMarkerContext";
-// import { getNearbySearch } from "../api/frontend/getNearbySearch";
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
@@ -38,8 +36,7 @@ const SearchBar = () => {
       locationRestriction: new google.maps.LatLngBounds(southWest, northEast),
       type: ["restaurant"],
     },
-    // 停止输入后等待1500毫秒
-    debounce: 1000
+    debounce: 1000,
   });
 
   const onSearchNavigate = async (e) => {
@@ -47,31 +44,35 @@ const SearchBar = () => {
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
+    // 已檢查options在空物件情況或未選擇價格情況都能搜尋
+    const encodeOptions = encodeURIComponent(JSON.stringify(options));
     try {
-      const encodeOptions = encodeURIComponent(JSON.stringify(options));
-      const searchData = await nearbySearch({
-        map: mapRef.current, keyword: value, options, location: new google.maps.LatLng(
-          currentPosition.lat,
-          currentPosition.lng,
-        )
-      })
-      // 成功取得data再setresult
-      if (searchData) {
-        console.log(searchData)
-        setResult(searchData)
-      }
-      // search/keyword/location/options
-      router.push(
-        `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
-      );
-      mapRef.current.panTo(
-        new google.maps.LatLng(currentPosition.lat, currentPosition.lng),
-      );
-      mapRef.current.setZoom(13);
+      const data = await nearbySearch({
+        keyword: value,
+        lat: currentPosition.lat,
+        lng: currentPosition.lng,
+        encodeOptions,
+      });
 
+      console.log(data);
+      if (data.status === "OK") {
+        const searchData = data.results.filter((item) =>
+          Object.keys(item).includes("opening_hours"),
+        );
+        console.log(searchData);
+        setResult(searchData);
+        router.push(
+          `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
+        );
+      } else if (data.status === "ZERO_RESULTS") {
+        alert("無搜尋結果，請重新搜尋");
+      } else {
+        console.log(data.status);
+        alert(data.status);
+      }
     } catch (error) {
-      alert(error.message)
-      console.log(error.message)
+      console.error(error);
+      alert("發生錯誤：" + error.message);
     }
   };
 

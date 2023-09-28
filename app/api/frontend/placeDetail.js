@@ -15,7 +15,7 @@ const getDistance = ({ id, location }) => {
         };
         resolve(data);
       } else {
-        reject("請求距離失敗", status);
+        reject(new Error(`請求距離失敗:${status}`));
       }
     });
   });
@@ -45,7 +45,7 @@ const getDetail = ({ map, id }) => {
         );
         resolve({ photos: photoArr, data: results });
       } else {
-        reject("請求詳細失敗", status);
+        reject(new Error(`請求詳細失敗:${status}`));
       }
     });
   });
@@ -60,6 +60,7 @@ export const getDetailData = async ({ id, map, location }) => {
     console.log(detail);
     return { distance, detail };
   } catch (error) {
-    console.error(error);
+    alert(error.message);
+    console.error(error.message);
   }
 };

@@ -10,13 +10,13 @@ const useSelectMarkerHook = () => {
     // 每次點擊marker
     if (selectedMarker) {
       if (isSmallScreen) {
-        const target = listRef.current.querySelector(`#${selectedMarker}`);
+        const target = listRef.current.querySelector(`#${selectedMarker.id}`);
         target.scrollIntoView({ behavior: "smooth" });
       } else {
-        router.push(`/detail/${selectedMarker}`);
+        router.push(`/detail/${selectedMarker.name}/${selectedMarker.id}`);
       }
     }
-  }, [selectedMarker]);
+  }, [selectedMarker?.id, selectedMarker?.name]);
 
   return {
     setSelectedMarker,

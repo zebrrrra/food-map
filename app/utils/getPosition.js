@@ -1,5 +1,3 @@
-// import { useState } from "react";
-// const [currentPosition, setCurrentPosition] = useState({ lat: 0, lng: 0 });
 export const getPosition = (map) => {
   // 嘗試不用state
   if (!map) return;

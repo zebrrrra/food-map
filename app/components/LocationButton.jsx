@@ -6,17 +6,17 @@ const LocationButton = () => {
   const { mapRef, setCurrentPosition } = useGlobal();
   const handlePanToLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
-      // setCurrentPosition((prev) => ({
-      //   ...prev,
-      //   lat: position.coords.latitude,
-      //   lng: position.coords.longitude,
-      // }));
-      setCurrentPosition(
-        new google.maps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude,
-        ),
-      );
+      setCurrentPosition((prev) => ({
+        ...prev,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      }));
+      // setCurrentPosition(
+      //   new google.maps.LatLng(
+      //     position.coords.latitude,
+      //     position.coords.longitude,
+      //   ),
+      // );
 
       mapRef.current.panTo(
         new google.maps.LatLng(
