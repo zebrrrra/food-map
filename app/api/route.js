@@ -31,7 +31,7 @@ export const nearbySearch = ({ map, keyword, options, location }) => {
   return new Promise((resolve, reject) => {
     const service = new google.maps.places.PlacesService(map);
     const { openNow, distance, min, max } = getOption(options);
-
+    console.log(openNow, distance, min, max)
     const request = {
       keyword,
       language: "zh-TW",
@@ -52,7 +52,7 @@ export const nearbySearch = ({ map, keyword, options, location }) => {
         // 處理搜索結果
         resolve(data);
       } else {
-        reject("搜尋失敗", status);
+        reject(new Error(status));
       }
     });
   });
@@ -75,7 +75,7 @@ export const getDistance = ({ id, location }) => {
         };
         resolve(data);
       } else {
-        reject("請求距離失敗", status);
+        reject(new Error("請求距離失敗"));
       }
     });
   });
@@ -105,7 +105,7 @@ export const getDetail = ({ map, id }) => {
         );
         resolve({ photos: photoArr, data: results });
       } else {
-        reject("請求詳細失敗", status);
+        reject(new Error("請求詳細失敗"));
       }
     });
   });

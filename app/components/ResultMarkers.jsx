@@ -17,7 +17,7 @@ const ResultMarkers = () => {
         restaurants.map((item) => (
           <Marker
             key={item.id}
-            position={item.latLng}
+            position={item.location}
             icon={{
               url: "https://img.icons8.com/tiny-glyph/32/visit.png",
             }}
