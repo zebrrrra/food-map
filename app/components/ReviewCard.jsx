@@ -1,5 +1,5 @@
 import React from "react";
-import RatingStar from "./RatingStar";
+import RatingStar from "./elements/RatingStar";
 import Image from "next/image";
 
 const ReviewCard = ({ data }) => {

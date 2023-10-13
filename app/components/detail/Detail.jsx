@@ -1,15 +1,15 @@
 import React from "react";
-import Carousel from "./Carousel";
+import Carousel from "../elements/Carousel";
 import { Menu } from "@headlessui/react";
-import RatingStar from "./RatingStar";
+import RatingStar from "../elements/RatingStar";
 import {
   MapPinIcon,
   PhoneIcon,
   ClockIcon,
   TruckIcon,
 } from "@heroicons/react/24/outline";
-import ReviewCard from "./ReviewCard";
-import { getDay } from "../utils/getDay";
+import ReviewCard from "../ReviewCard";
+import { getDay } from "../../utils/getDay";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 
 const Detail = ({ onClose, data }) => {
@@ -17,6 +17,8 @@ const Detail = ({ onClose, data }) => {
     index: new Date().getDay(),
     array: data.detail.data.opening_hours.weekday_text,
   });
+  console.log(data)
+
   return (
     <div
       className={`fixed inset-x-0 bottom-0 flex h-[200px] w-full items-end overflow-x-auto md:left-0 md:h-[90vh] md:w-[35vw] md:overflow-y-scroll md:bg-white`}
@@ -63,6 +65,7 @@ const Detail = ({ onClose, data }) => {
                 </div>
                 <div className="flex py-4">
                   <PhoneIcon className="mr-4 h-6 w-6" />
+                  {/* production不顯示號碼 */}
                   <h4>{data.detail.data.formatted_phone_number}</h4>
                 </div>
                 <Menu as="div" className="flex items-center py-4">

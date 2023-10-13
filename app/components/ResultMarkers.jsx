@@ -9,9 +9,10 @@ const ResultMarkers = () => {
   const restaurants = getSearchLatLng(result);
   const { hoveredMarkerId } = useMarkerContext();
   const { setSelectedMarker } = useSelectMarkerHook();
+
   return (
     <>
-      {result &&
+      {restaurants &&
         restaurants.map((item) => (
           <Marker
             key={item.id}

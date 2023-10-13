@@ -1,12 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import Detail from "@/app/components/Detail";
-import DetailModal from "@/app/components/DetailModal";
+import Detail from "@/app/components/detail/Detail";
+import DetailModal from "@/app/components/detail/DetailModal";
 import { useGlobal } from "@/app/contexts/globalContext";
 import { useRouter } from "next/navigation";
 import { getDetailData } from "@/app/api/frontend/placeDetail";
 import { useQuery } from "@tanstack/react-query";
-import Loading from "@/app/components/Loading";
+import Loading from "@/app/components/elements/Loading";
 
 const DetailPage = ({ params }) => {
   const [isOpenModal, setIsOpenModal] = useState(true);
@@ -43,11 +43,13 @@ const DetailPage = ({ params }) => {
       {data && (
         <>
           {isSmallScreen ? (
-            <DetailModal
-              data={data}
-              isOpen={isOpenModal}
-              onClose={handleClose}
-            />
+            <>
+              <DetailModal
+                data={data}
+                isOpen={isOpenModal}
+                onClose={handleClose}
+              />
+            </>
           ) : (
             <Detail data={data} onClose={handleClose} />
           )}

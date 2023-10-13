@@ -1,5 +1,5 @@
 import React from "react";
-import { getDay } from "../utils/getDay";
+import { getDay } from "../../utils/getDay";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import {
   ChevronDownIcon,
@@ -9,15 +9,16 @@ import {
   TruckIcon,
 } from "@heroicons/react/24/outline";
 
-import Carousel from "./Carousel";
-import RatingStar from "./RatingStar";
-import ReviewCard from "./ReviewCard";
+import Carousel from "../elements/Carousel";
+import RatingStar from "../elements/RatingStar";
+import ReviewCard from "../ReviewCard";
 
 const DetailModal = ({ isOpen, onClose, data }) => {
   const today = getDay({
     index: new Date().getDay(),
     array: data.detail.data.opening_hours.weekday_text,
   });
+  console.log(data)
   return (
     <Transition show={isOpen} as={React.Fragment}>
       <Dialog onClose={onClose} className="relative z-50 md:h-full md:w-full">

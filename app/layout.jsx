@@ -4,7 +4,6 @@ import { useLoadScript } from "@react-google-maps/api";
 import Map from "./components/Map";
 import SearchBar from "./components/SearchBar";
 import LocationButton from "./components/LocationButton";
-import ResultMarkers from "./components/ResultMarkers";
 import Providers from "./components/Providers";
 import { GlobalContextComponent } from "./contexts/globalContext";
 import { MarkerContextProvider } from "./contexts/hoverMarkerContext";
@@ -31,7 +30,6 @@ export default function RootLayout({ children }) {
               <div className="relative h-screen w-full">
                 <MarkerContextProvider>
                   <Map>
-                    <ResultMarkers />
                     {children}
                   </Map>
                 </MarkerContextProvider>
