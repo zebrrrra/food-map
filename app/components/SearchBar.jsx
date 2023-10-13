@@ -7,7 +7,7 @@ import FilterModal from "./FilterModal";
 import usePlacesAutocomplete from "use-places-autocomplete";
 import { useGlobal } from "../contexts/globalContext";
 import { useRouter } from "next/navigation";
-import { nearbySearch } from "../api/frontend/nearbySearch";
+
 const SearchBar = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [options, setOptions] = useState({});
@@ -37,39 +37,20 @@ const SearchBar = () => {
     },
     debounce: 1000,
   });
-
+  // const test = () => {
+  //   console.log(options)
+  // }
   const onSearchNavigate = async (e) => {
     e.preventDefault();
     if (!currentPosition) return alert("請提供位置");
     if (!value.trim()) return alert("請輸入文字");
     clearSuggestions();
     const encodeOptions = encodeURIComponent(JSON.stringify(options));
+    console.log(options)
 
-    try {
-      const data = await nearbySearch({
-        keyword: value,
-        lat: currentPosition.lat,
-        lng: currentPosition.lng,
-        encodeOptions,
-      });
-
-      if (data.status === "OK") {
-        const searchData = data.results.filter((item) =>
-          Object.keys(item).includes("opening_hours"),
-        );
-        setResult(searchData);
-        router.push(
-          `/search?keyword=${value}&lat=${currentPosition.lat}&lng=${currentPosition.lng}&options=${encodeOptions}`,
-        );
-      } else if (data.status === "ZERO_RESULTS") {
-        alert("無搜尋結果，請重新搜尋");
-      } else {
-        alert(data.status);
-      }
-    } catch (error) {
-      console.error(error);
-      alert(`發生錯誤：${error.message}`);
-    }
+    router.push(
+      `/search/${value}/@${currentPosition.lat},${currentPosition.lng}/options=${encodeOptions}`,
+    );
   };
 
   return (
@@ -82,6 +63,7 @@ const SearchBar = () => {
       <div
         className={`fixed left-4 top-4 w-[50vw] md:left-0 md:top-0 md:ml-2 md:mt-1 md:w-[30vw] md:translate-x-[unset]`}
       >
+        {/* <button onClick={test}>測試</button> */}
         <Combobox value={value} onChange={setValue}>
           <div className="relative mt-1 md:w-[calc(18rem-58px)] lg:w-[412px]">
             {/* filter鈕 */}

@@ -11,12 +11,6 @@ const LocationButton = () => {
         lat: position.coords.latitude,
         lng: position.coords.longitude,
       }));
-      // setCurrentPosition(
-      //   new google.maps.LatLng(
-      //     position.coords.latitude,
-      //     position.coords.longitude,
-      //   ),
-      // );
 
       mapRef.current.panTo(
         new google.maps.LatLng(

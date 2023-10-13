@@ -1,13 +1,12 @@
 import React from "react";
 import Image from "next/image";
-import ClosedLabel from "./closedLabel";
-import OpenLabel from "./openLabel";
-import RatingStar from "./RatingStar";
-import { useGlobal } from "../contexts/globalContext";
-import { useMarkerContext } from "../contexts/hoverMarkerContext";
+import ClosedLabel from "../elements/ClosedLabel";
+import OpenLabel from "../elements/OpenLabel";
+import RatingStar from "../elements/RatingStar";
+import { useGlobal } from "../../contexts/globalContext";
+import { useMarkerContext } from "../../contexts/hoverMarkerContext";
 import { MapPinIcon } from "@heroicons/react/24/outline";
-import { dollar } from "../utils/price";
-import Link from "next/link";
+import { dollar } from "../../utils/price";
 
 const RestaurantCard = ({ id, onCardClick, data }) => {
   const { isSmallScreen } = useGlobal();
@@ -18,10 +17,6 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
       setHoveredMarkerId(value);
     }
   };
-
-  const photoUrl =
-    Object.keys(data).includes("photos") &&
-    `https://maps.googleapis.com/maps/api/place/photo?maxwidth=150&photo_reference=${data.photos[0].photo_reference}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
   const place = data.plus_code.compound_code.match(/[\u4e00-\u9fa5]+/);
   // compound_code:"X6X2+5G 中西區 台南市"
@@ -36,7 +31,7 @@ const RestaurantCard = ({ id, onCardClick, data }) => {
       <div className="h-[112px] max-w-full  md:flex md:h-full md:w-[80px] lg:w-[140px]">
         {Object.keys(data).includes("photos") ? (
           <Image
-            src={photoUrl}
+            src={data.photos[0].getUrl()}
             alt="site"
             width={200}
             height={200}
